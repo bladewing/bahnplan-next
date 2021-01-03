@@ -1,0 +1,2 @@
+docker login -u bladewing -p "$DOCKER_PASSWORD" registry.ifflaender-family.de
+docker push registry.ifflaender-family.de/bladewing/bahnplan
