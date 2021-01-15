@@ -1,21 +1,31 @@
-from django.db import models
 from django.contrib.auth import get_user_model
+from django.db.models import *
 
-#### Probably not needed since the Django User Model brings enough with it.
+# Probably not needed since the Django User Model brings enough with it.
 #
-#class BPUser(models.Model):
-#    """extention for django-included user from django.contrib.auth.models"""
-#    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
-#    #accepted = models.BooleanField # Unnoetig, da ueber zugriffslevel abbildbar.
+# class BPUser(Model):
+#    """extension for django-included user from django.contrib.auth.models"""
+#    user = OneToOneField(get_user_model(), on_delete=CASCADE)
+#    #accepted = BooleanField # Unnoetig, da ueber zugriffslevel abbildbar.
 #
+from django.utils.timezone import now
 
-class Company(models.Model):
+
+class Company(Model):
     """company, to be owned by an user"""
-    name = models.CharField(max_length=255)
-    abbrev = models.CharField(max_length=127)
-    ownership = models.ManyToManyField(get_user_model()) # unsure, if this will work, but you shouldn't reference the user model directly: See https://github.com/PyCQA/pylint-django/issues/278
+    name = CharField(max_length=255)
+    abbrev = CharField(max_length=127)
+    ownership = ManyToManyField(
+        get_user_model())
 
-class Route(models.Model):
+    # unsure, if this will work, but you shouldn't reference the user model directly:
+    # See https://github.com/PyCQA/pylint-django/issues/278
+
+    def __str__(self):
+        return self.name + ' (' + self.abbrev + ')'
+
+
+class Route(Model):
     """The routes, can be operated by a company"""
     CARGO = "CG"
     LOCAL = "LO"
@@ -25,87 +35,99 @@ class Route(models.Model):
         (LOCAL, 'Local'),
         (INTERCITY, 'Intercity'),
     )
-    operator = models.ForeignKey(Company, on_delete=models.SET_NULL)
-    name = models.CharField(max_length=127)
-    type = models.CharField(max_length=2, choices=TYPE_CHOICES)
-    revenue_per_week = models.DecimalField(max_digits=None, decimal_places=2)
-    start_date = models.DateTimeField
-    end_date = models.DateTimeField
+    operator = ForeignKey(Company, null=True, on_delete=SET_NULL)
+    name = CharField(max_length=127)
+    type = CharField(max_length=2, choices=TYPE_CHOICES)
+    revenue_per_week = DecimalField(max_digits=17, decimal_places=2)
+    start_date = DateTimeField(default=now)
+    end_date = DateTimeField()
 
-class Station(models.Model):
+
+class Station(Model):
     """Database-Represention of a station. Name has to be unique"""
-    name = models.CharField(max_length=255, unique=True)
+    name = CharField(max_length=255, unique=True)
 
-class Workshop(models.Model):
-    name = models.CharField(max_length=255)
-    station = models.ForeignKey(Station, on_delete=models.PROTECT)
 
-class WorkshopCategory(models.Model):
-    name = models.CharField(max_length=255)
-    vocal_name = models.CharField(max_length=255)
+class Workshop(Model):
+    name = CharField(max_length=255)
+    station = ForeignKey(Station, on_delete=PROTECT)
 
-class Tender(models.Model):
-    route = models.ForeignKey(Route, on_delete=models.PROTECT)
-    text = models.TextField
-    start_date = models.DateTimeField
-    end_date = models.DateTimeField
-    workshops = models.ManyToManyField(Workshop)
 
-class TrackLimit(models.Model):
-    tender = models.ForeignKey(Tender, on_delete=models.CASCADE)
-    station = models.ForeignKey(Station, on_delete=models.PROTECT)
-    number = models.IntegerField
-    max_usage_in_minutes = models.IntegerField
-    time_to_reach_in_minutes = models.IntegerField
+class WorkshopCategory(Model):
+    name = CharField(max_length=255)
+    vocal_name = CharField(max_length=255)
 
-class VehicleType(models.Model):
-    name = models.CharField(max_length=127)
-    vocal_name = models.CharField(max_length=255)
-    workshop_categorie = models.ForeignKey(WorkshopCategory, on_delete=models.PROTECT)
-    vmax = models.IntegerField(max_length=4)
-    total_price = models.DecimalField(max_digits=None, decimal_places=2)
-    cost_per_km = models.DecimalField(max_digits=None, decimal_places=10)
-    cost_per_hour = models.DecimalField(max_digits=None, decimal_places=10)
-    multi_head_limit = models.IntegerField()
-    cargo_tons_limit = models.IntegerField()
 
-class LeasingMode(models.Model):
-    name = models.CharField(max_length=127)
-    vocal_name = models.CharField(max_length=255)
-    factor_yearly = models.DecimalField(max_digits=None, decimal_places=10)
-    factor_monthly = models.DecimalField(max_digits=None, decimal_places=10)
+class Tender(Model):
+    route = ForeignKey(Route, on_delete=PROTECT)
+    text = TextField
+    start_date = DateTimeField
+    end_date = DateTimeField
+    workshops = ManyToManyField(Workshop)
 
-class Plan(models.Model):
-    creator = models.ForeignKey(Company, on_delete=models.PROTECT)
-    file = models.FileField()
-    tender = models.ForeignKey(Tender, on_delete=models.PROTECT) #should be optional
-    route = models.ForeignKey(Route, on_delete=models.PROTECT) #plan should be active if it has a route
 
-class Vehicle(models.Model):
-    plan = models.ForeignKey(Plan, on_delete=models.SET_NULL)
-    type = models.ForeignKey(VehicleType, on_delete=models.PROTECT)
-    owner = models.ForeignKey(Company, on_delete=models.PROTECT)
-    leasing_mode = models.ForeignKey(LeasingMode, on_delete=models.PROTECT)
-    leased_since = models.DateTimeField
+class TrackLimit(Model):
+    tender = ForeignKey(Tender, on_delete=CASCADE)
+    station = ForeignKey(Station, on_delete=PROTECT)
+    number = IntegerField
+    max_usage_in_minutes = IntegerField
+    time_to_reach_in_minutes = IntegerField
 
-class Criterion(models.Model):
-    tender = models.ForeignKey(Tender, on_delete=models.CASCADE)
-    name = models.CharField(max_length=127)
-    weight = models.DecimalField(max_digits=None, decimal_places=10)
 
-class Track(models.Model):
-    tender = models.ForeignKey(Tender, on_delete=models.CASCADE)
-    start = models.ForeignKey(Station, on_delete=models.PROTECT)
-    end = models.ForeignKey(Station, on_delete=models.PROTECT)
-    description = models.CharField(max_length=255) # e.g. via or name
-    type = models.CharField(max_lenght=2, choices=Route.TYPE_CHOICES)
-    length = models.DecimalField(max_digits=None, decimal_places=6)
-    price = models.DecimalField(max_digits=None, decimal_places=2)
-    tracks = models.IntegerField(max_length=3)
-    travel_time_in_minutes = models.IntegerField()
-    min_speed = models.IntegerField()
+class VehicleType(Model):
+    name = CharField(max_length=127)
+    vocal_name = CharField(max_length=255)
+    workshop_categorie = ForeignKey(WorkshopCategory, on_delete=PROTECT)
+    vmax = IntegerField()
+    total_price = DecimalField(max_digits=10, decimal_places=2)
+    cost_per_km = DecimalField(max_digits=5, decimal_places=2)
+    cost_per_hour = DecimalField(max_digits=6, decimal_places=2)
+    multi_head_limit = IntegerField()
+    cargo_tons_limit = IntegerField()
 
-class TransportRequirement(models.Model):
-    tender = models.ForeignKey(Tender, on_delete=models.CASCADE)
-    orgin = models.ForeignKey(Station, on_delete=models.PROTECT)
-    destination = models.ForeignKey(Station, on_delete=models.PROTECT)
+
+class LeasingMode(Model):
+    name = CharField(max_length=127)
+    vocal_name = CharField(max_length=255)
+    factor_yearly = DecimalField(max_digits=6, decimal_places=5)
+    factor_weekly = DecimalField(max_digits=6, decimal_places=5)
+
+
+class Plan(Model):
+    creator = ForeignKey(Company, on_delete=PROTECT)
+    file = FileField()
+    tender = ForeignKey(Tender, on_delete=PROTECT)  # should be optional
+    route = ForeignKey(Route, on_delete=PROTECT)  # plan should be active if it has a route
+
+
+class Vehicle(Model):
+    plan = ForeignKey(Plan, null=True, on_delete=SET_NULL)
+    type = ForeignKey(VehicleType, on_delete=PROTECT)
+    owner = ForeignKey(Company, on_delete=PROTECT)
+    leasing_mode = ForeignKey(LeasingMode, on_delete=PROTECT)
+    leased_since = DateTimeField
+
+
+class Criterion(Model):
+    tender = ForeignKey(Tender, on_delete=CASCADE)
+    name = CharField(max_length=127)
+    weight = DecimalField(max_digits=10, decimal_places=2)
+
+
+class Track(Model):
+    tender = ForeignKey(Tender, on_delete=CASCADE)
+    start = ForeignKey(Station, related_name='start_of', on_delete=PROTECT)
+    end = ForeignKey(Station, related_name='end_of', on_delete=PROTECT)
+    description = CharField(max_length=255)  # e.g. via or name
+    type = CharField(max_length=2, choices=Route.TYPE_CHOICES)
+    length = DecimalField(max_digits=10, decimal_places=6)
+    price = DecimalField(max_digits=5, decimal_places=2)
+    tracks = IntegerField()
+    travel_time_in_minutes = IntegerField()
+    min_speed = IntegerField()
+
+
+class TransportRequirement(Model):
+    tender = ForeignKey(Tender, related_name='requirements', on_delete=CASCADE)
+    orgin = ForeignKey(Station, related_name='origin_for', on_delete=PROTECT)
+    destination = ForeignKey(Station, related_name='destination_for', on_delete=PROTECT)
