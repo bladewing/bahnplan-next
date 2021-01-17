@@ -17,8 +17,7 @@ class Company(Model):
     abbrev = CharField(max_length=127)
     ownership = ManyToManyField(
         get_user_model())
-
-    # unsure, if this will work, but you shouldn't reference the user model directly:
+    # TODO unsure, if the above will work, but you shouldn't reference the user model directly:
     # See https://github.com/PyCQA/pylint-django/issues/278
 
     def __str__(self):
@@ -39,95 +38,126 @@ class Route(Model):
     name = CharField(max_length=127)
     type = CharField(max_length=2, choices=TYPE_CHOICES)
     revenue_per_week = DecimalField(max_digits=17, decimal_places=2)
-    start_date = DateTimeField(default=now)
-    end_date = DateTimeField()
-
+    start_date = DateTimeField(null=True, blank=True) # was default=now, I think this would't be a good design decision
+    end_date = DateTimeField(null=True, blank=True)
+    def __str__(self):
+        return self.type + " " + self.name + " (" + self.operator.name + ")"
 
 class Station(Model):
     """Database-Represention of a station. Name has to be unique"""
     name = CharField(max_length=255, unique=True)
-
-
-class Workshop(Model):
-    name = CharField(max_length=255)
-    station = ForeignKey(Station, on_delete=PROTECT)
-
+    def __str__(self):
+        return self.name
 
 class WorkshopCategory(Model):
+    """WorkShopCategories defines, which vehicles can be services in which workshops"""
     name = CharField(max_length=255)
     vocal_name = CharField(max_length=255)
+    def __str__(self):
+        return self.vocal_name + " ("+self.name + ")"
 
+class Workshop(Model):
+    """Workshops, have to be attached to an existing station and can have WorkshopCategories"""
+    name = CharField(max_length=255)
+    station = ForeignKey(Station, on_delete=PROTECT)
+    categories = ManyToManyField(WorkshopCategory)
+    def __str__(self):
+        catstring = " ("
+        for category in self.categories.all():
+            catstring = catstring + category.name
+        catstring = catstring + ")"
+        return self.name + self.station + catstring
 
 class Tender(Model):
+    """Tenders where Users can apply to"""
     route = ForeignKey(Route, on_delete=PROTECT)
     text = TextField
     start_date = DateTimeField
     end_date = DateTimeField
     workshops = ManyToManyField(Workshop)
-
+    def __str__(self):
+        return self.route.__str__()
 
 class TrackLimit(Model):
+    """The usage of a station by each tender can be limited with TrackLimit"""
     tender = ForeignKey(Tender, on_delete=CASCADE)
-    station = ForeignKey(Station, on_delete=PROTECT)
+    station = ForeignKey(Station, on_delete=PROTECT, related_name='+')
     number = IntegerField
     max_usage_in_minutes = IntegerField
     time_to_reach_in_minutes = IntegerField
+    def __str__(self):
+        return self.station.name + " (" + self.number + "x " + self.max_usage_in_minutes + ", " + self.time_to_reach_in_minutes + ")"
 
 
 class VehicleType(Model):
+    """From a VehicleType any number of vehicles can be created. VehicleType defines the "static" costs of a Vehicle, while the Vehicles class contains the parameters of the instance"""
     name = CharField(max_length=127)
     vocal_name = CharField(max_length=255)
     workshop_categorie = ForeignKey(WorkshopCategory, on_delete=PROTECT)
     vmax = IntegerField()
-    total_price = DecimalField(max_digits=10, decimal_places=2)
-    cost_per_km = DecimalField(max_digits=5, decimal_places=2)
-    cost_per_hour = DecimalField(max_digits=6, decimal_places=2)
+    total_price = DecimalField(max_digits=12, decimal_places=2)
+    cost_per_km = DecimalField(max_digits=12, decimal_places=6)
+    cost_per_hour = DecimalField(max_digits=12, decimal_places=6)
     multi_head_limit = IntegerField()
     cargo_tons_limit = IntegerField()
-
+    def __str__(self):
+        return self.name + " (" + self.vocal_name + ")"
 
 class LeasingMode(Model):
+    """yearly and weekly costs to own a vehicle"""
     name = CharField(max_length=127)
     vocal_name = CharField(max_length=255)
     factor_yearly = DecimalField(max_digits=6, decimal_places=5)
     factor_weekly = DecimalField(max_digits=6, decimal_places=5)
-
+    def __str__(self):
+        return self.name
 
 class Plan(Model):
+    """Class to hold a file with the plan of an application an attach it to a tender"""
     creator = ForeignKey(Company, on_delete=PROTECT)
     file = FileField()
-    tender = ForeignKey(Tender, on_delete=PROTECT)  # should be optional
-    route = ForeignKey(Route, on_delete=PROTECT)  # plan should be active if it has a route
-
+    tender = ForeignKey(Tender, on_delete=PROTECT)  # TODO should be optional
+    route = ForeignKey(Route, on_delete=PROTECT, null=True)  # plan should be active if it has a route
+    def __str__(self):
+        return self.id + self.tender.__str__() + " (" + self.creator.abbrev + ")"
 
 class Vehicle(Model):
+    """The Vehicle class is for "instances" of vehicles. Every instance has a VehicleClass, a leasing_mode and an owner."""
     plan = ForeignKey(Plan, null=True, on_delete=SET_NULL)
     type = ForeignKey(VehicleType, on_delete=PROTECT)
     owner = ForeignKey(Company, on_delete=PROTECT)
     leasing_mode = ForeignKey(LeasingMode, on_delete=PROTECT)
     leased_since = DateTimeField
-
+    def __str__(self):
+        return self.type.name + "-" + self.id
 
 class Criterion(Model):
+    """Ciriterion to determine the ranking of tender applications"""
     tender = ForeignKey(Tender, on_delete=CASCADE)
     name = CharField(max_length=127)
-    weight = DecimalField(max_digits=10, decimal_places=2)
-
+    weight = DecimalField(max_digits=12, decimal_places=10)
+    def __str__(self):
+        return self.name
 
 class Track(Model):
+    """Railway line which can be used in tenders resp. which are allows to used in tender applications"""
     tender = ForeignKey(Tender, on_delete=CASCADE)
-    start = ForeignKey(Station, related_name='start_of', on_delete=PROTECT)
-    end = ForeignKey(Station, related_name='end_of', on_delete=PROTECT)
+    start = ForeignKey(Station, related_name='start_of', on_delete=PROTECT) # TODO perhaps remove backward relation?
+    end = ForeignKey(Station, related_name='end_of', on_delete=PROTECT) # TODO perhaps remove backward relation?
     description = CharField(max_length=255)  # e.g. via or name
     type = CharField(max_length=2, choices=Route.TYPE_CHOICES)
-    length = DecimalField(max_digits=10, decimal_places=6)
-    price = DecimalField(max_digits=5, decimal_places=2)
+    length = DecimalField(max_digits=12, decimal_places=6)
+    price = DecimalField(max_digits=12, decimal_places=2)
     tracks = IntegerField()
     travel_time_in_minutes = IntegerField()
     min_speed = IntegerField()
-
+    def __str__(self):
+        return self.tender.id + " " + self.start.name + " -> " + self.end.name
 
 class TransportRequirement(Model):
+    """Demand which have to be transported to send a valid tender application"""
     tender = ForeignKey(Tender, related_name='requirements', on_delete=CASCADE)
     orgin = ForeignKey(Station, related_name='origin_for', on_delete=PROTECT)
     destination = ForeignKey(Station, related_name='destination_for', on_delete=PROTECT)
+    def __str__(self):
+        return self.tender.id + ": " + self.orgin.name + "->" + self.destination.name
