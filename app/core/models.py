@@ -17,8 +17,7 @@ class Company(Model):
     abbrev = CharField(max_length=127)
     ownership = ManyToManyField(
         get_user_model())
-
-    # unsure, if this will work, but you shouldn't reference the user model directly:
+    # TODO unsure, if the above will work, but you shouldn't reference the user model directly:
     # See https://github.com/PyCQA/pylint-django/issues/278
 
     def __str__(self):
@@ -39,10 +38,10 @@ class Route(Model):
     name = CharField(max_length=127)
     type = CharField(max_length=2, choices=TYPE_CHOICES)
     revenue_per_week = DecimalField(max_digits=17, decimal_places=2)
-    start_date = DateTimeField(default=now)
-    end_date = DateTimeField()
+    start_date = DateTimeField(null=True, blank=True) # was default=now, I think this would't be a good design decision
+    end_date = DateTimeField(null=True, blank=True)
     def __str__(self):
-        return self.type + " " + self.name + " (" + self.operator + ")"
+        return self.type + " " + self.name + " (" + self.operator.name + ")"
 
 class Station(Model):
     """Database-Represention of a station. Name has to be unique"""
@@ -117,8 +116,8 @@ class Plan(Model):
     """Class to hold a file with the plan of an application an attach it to a tender"""
     creator = ForeignKey(Company, on_delete=PROTECT)
     file = FileField()
-    tender = ForeignKey(Tender, on_delete=PROTECT)  # should be optional
-    route = ForeignKey(Route, on_delete=PROTECT)  # plan should be active if it has a route
+    tender = ForeignKey(Tender, on_delete=PROTECT)  # TODO should be optional
+    route = ForeignKey(Route, on_delete=PROTECT, null=True)  # plan should be active if it has a route
     def __str__(self):
         return self.id + self.tender.__str__() + " (" + self.creator.abbrev + ")"
 
@@ -143,8 +142,8 @@ class Criterion(Model):
 class Track(Model):
     """Railway line which can be used in tenders resp. which are allows to used in tender applications"""
     tender = ForeignKey(Tender, on_delete=CASCADE)
-    start = ForeignKey(Station, related_name='start_of', on_delete=PROTECT) # perhaps remove backward relation?
-    end = ForeignKey(Station, related_name='end_of', on_delete=PROTECT) # perhaps remove backward relation?
+    start = ForeignKey(Station, related_name='start_of', on_delete=PROTECT) # TODO perhaps remove backward relation?
+    end = ForeignKey(Station, related_name='end_of', on_delete=PROTECT) # TODO perhaps remove backward relation?
     description = CharField(max_length=255)  # e.g. via or name
     type = CharField(max_length=2, choices=Route.TYPE_CHOICES)
     length = DecimalField(max_digits=12, decimal_places=6)

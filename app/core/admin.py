@@ -21,6 +21,6 @@ class CompanyAdmin(admin.ModelAdmin):
 admin.site.register(Company, CompanyAdmin)
 
 class RouteAdmin(admin.ModelAdmin):
-    list_display = ('name', 'operator', 'type', 'revenue', 'start_date', 'end_date')
+    list_display = ('name', 'operator', 'type', 'revenue_per_week', 'start_date', 'end_date')
 
-admin.site.register(Route)
+admin.site.register(Route, RouteAdmin)
