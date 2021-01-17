@@ -1,11 +1,13 @@
-from django.contrib.auth import login, authenticate
-from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+
 from .forms import CompanyCreationForm
+
 
 def index_view(request):
     """Main view"""
     return render(request, 'base.html')
+
 
 @login_required()
 def create_company_view(request):
@@ -16,7 +18,8 @@ def create_company_view(request):
         form = CompanyCreationForm(request.POST)
         if form.is_valid():
             new_company = form.save(commit=False)
-            new_company.owner = request.user
+            new_company.save()
+            new_company.ownership.add(request.user)
             new_company.save()
             return redirect('index')
     else:
