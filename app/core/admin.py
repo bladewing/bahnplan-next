@@ -1,6 +1,16 @@
 # Register your models here.
 from django.contrib import admin
 
+<<<<<<< HEAD
+# Register your models here.
+from .models import Vehicle, VehicleType, WorkshopCategory, Company, Tender
+
+admin.site.register(Vehicle)
+admin.site.register(VehicleType)
+admin.site.register(WorkshopCategory)
+admin.site.register(Company)
+admin.site.register(Tender)
+=======
 from core.models import Company, Route
 
 
@@ -23,3 +33,4 @@ class RouteAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Route)
+>>>>>>> 933c05833a1daa8d2508d15f94ed9309f3141ea3
