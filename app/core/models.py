@@ -36,12 +36,12 @@ class Route(Model):
     )
     operator = ForeignKey(Company, null=True, on_delete=SET_NULL)
     name = CharField(max_length=127)
-    type = CharField(max_length=2, choices=TYPE_CHOICES)
+    ttype = CharField(max_length=2, choices=TYPE_CHOICES)
     revenue_per_week = DecimalField(max_digits=17, decimal_places=2)
     start_date = DateTimeField(null=True, blank=True) # was default=now, I think this would't be a good design decision
     end_date = DateTimeField(null=True, blank=True)
     def __str__(self):
-        return self.type + " " + self.name + " (" + self.operator.name + ")"
+        return self.ttype + " " + self.name + " (" + self.operator.name + ")"
 
 class Station(Model):
     """Database-Represention of a station. Name has to be unique"""
@@ -66,14 +66,14 @@ class Workshop(Model):
         for category in self.categories.all():
             catstring = catstring + category.name
         catstring = catstring + ")"
-        return self.name + self.station + catstring
+        return self.name + " at " + self.station.name + catstring
 
 class Tender(Model):
     """Tenders where Users can apply to"""
     route = ForeignKey(Route, on_delete=PROTECT)
-    text = TextField
-    start_date = DateTimeField
-    end_date = DateTimeField
+    text = TextField(null=True)
+    start_date = DateTimeField(null=True, blank=True)
+    end_date = DateTimeField(null=True, blank=True)
     workshops = ManyToManyField(Workshop)
     def __str__(self):
         return self.route.__str__()
@@ -82,9 +82,9 @@ class TrackLimit(Model):
     """The usage of a station by each tender can be limited with TrackLimit"""
     tender = ForeignKey(Tender, on_delete=CASCADE)
     station = ForeignKey(Station, on_delete=PROTECT, related_name='+')
-    number = IntegerField
-    max_usage_in_minutes = IntegerField
-    time_to_reach_in_minutes = IntegerField
+    number = IntegerField(default=2)
+    max_usage_in_minutes = IntegerField(null=True)
+    time_to_reach_in_minutes = IntegerField(null=True)
     def __str__(self):
         return self.station.name + " (" + self.number + "x " + self.max_usage_in_minutes + ", " + self.time_to_reach_in_minutes + ")"
 
@@ -127,7 +127,7 @@ class Vehicle(Model):
     type = ForeignKey(VehicleType, on_delete=PROTECT)
     owner = ForeignKey(Company, on_delete=PROTECT)
     leasing_mode = ForeignKey(LeasingMode, on_delete=PROTECT)
-    leased_since = DateTimeField
+    leased_since = DateTimeField()
     def __str__(self):
         return self.type.name + "-" + self.id
 
