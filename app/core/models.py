@@ -34,10 +34,10 @@ class Route(Model):
         (LOCAL, 'Local'),
         (INTERCITY, 'Intercity'),
     )
-    operator = ForeignKey(Company, null=True, on_delete=SET_NULL)
+    operator = ForeignKey(Company, null=True, blank=True, on_delete=SET_NULL)
     name = CharField(max_length=127)
     ttype = CharField(max_length=2, choices=TYPE_CHOICES)
-    revenue_per_week = DecimalField(max_digits=17, decimal_places=2)
+    revenue_per_week = DecimalField(max_digits=17, decimal_places=2, blank=True, null=True)
     start_date = DateTimeField(null=True, blank=True) # was default=now, I think this would't be a good design decision
     end_date = DateTimeField(null=True, blank=True)
     def __str__(self):
@@ -69,7 +69,7 @@ class Workshop(Model):
         return self.name + " at " + self.station.name + catstring
 
 class Tender(Model):
-    """Tenders where Users can apply to"""
+    """Tenders where Users can apply for"""
     route = ForeignKey(Route, on_delete=PROTECT)
     text = TextField(null=True)
     start_date = DateTimeField(null=True, blank=True)
@@ -86,7 +86,7 @@ class TrackLimit(Model):
     max_usage_in_minutes = IntegerField(null=True)
     time_to_reach_in_minutes = IntegerField(null=True)
     def __str__(self):
-        return self.station.name + " (" + self.number + "x " + self.max_usage_in_minutes + ", " + self.time_to_reach_in_minutes + ")"
+        return self.station.name + " (" + str(self.number) + "x " + str(self.max_usage_in_minutes) + ", " + str(self.time_to_reach_in_minutes) + ")"
 
 
 class VehicleType(Model):
@@ -124,12 +124,12 @@ class Plan(Model):
 class Vehicle(Model):
     """The Vehicle class is for "instances" of vehicles. Every instance has a VehicleClass, a leasing_mode and an owner."""
     plan = ForeignKey(Plan, null=True, on_delete=SET_NULL)
-    type = ForeignKey(VehicleType, on_delete=PROTECT)
+    vtype = ForeignKey(VehicleType, on_delete=PROTECT)
     owner = ForeignKey(Company, on_delete=PROTECT)
     leasing_mode = ForeignKey(LeasingMode, on_delete=PROTECT)
     leased_since = DateTimeField()
     def __str__(self):
-        return self.type.name + "-" + self.id
+        return self.vtype.name + "-" + self.id
 
 class Criterion(Model):
     """Ciriterion to determine the ranking of tender applications"""
@@ -145,7 +145,7 @@ class Track(Model):
     start = ForeignKey(Station, related_name='start_of', on_delete=PROTECT) # TODO perhaps remove backward relation?
     end = ForeignKey(Station, related_name='end_of', on_delete=PROTECT) # TODO perhaps remove backward relation?
     description = CharField(max_length=255)  # e.g. via or name
-    type = CharField(max_length=2, choices=Route.TYPE_CHOICES)
+    ttype = CharField(max_length=2, choices=Route.TYPE_CHOICES)
     length = DecimalField(max_digits=12, decimal_places=6)
     price = DecimalField(max_digits=12, decimal_places=2)
     tracks = IntegerField()
@@ -154,10 +154,53 @@ class Track(Model):
     def __str__(self):
         return self.tender.id + " " + self.start.name + " -> " + self.end.name
 
+class Line(Model):
+    """Lines are mostly like 'containers' holding different demands for tenders."""
+    tender = ForeignKey(Tender, on_delete=CASCADE)
+    name = CharField(max_length=127)
+    def __str__(self):
+        return self.name + " " + self.tender.__str__()
+    
+
 class TransportRequirement(Model):
-    """Demand which have to be transported to send a valid tender application"""
-    tender = ForeignKey(Tender, related_name='requirements', on_delete=CASCADE)
+    """Demand which have to be transported to send a valid tender application. Frequency, starttime and endtime should be in minutes, for the two later ones starting from midnight"""
+    ONCE = "ONCE"
+    HOURLY = "HRLY"
+    DAILY = "DALY"
+    FREQUENCY_CHOICES = (
+        (ONCE, 'once'),
+        (HOURLY, 'hourly'),
+        (DAILY, 'daily'),
+    )
+    PASSENGERS = "PAS"
+    CARGO = "CGO"
+    TYPE_CHOICES = (
+        (PASSENGERS, 'PAS'),
+        (CARGO, 'CGO'),
+    )
+    line = ForeignKey(Line, on_delete=CASCADE)
+    ttype = CharField(max_length=3, choices=TYPE_CHOICES)
+    demand = IntegerField()
+    frequency = CharField(max_length=4, choices=FREQUENCY_CHOICES)
     orgin = ForeignKey(Station, related_name='origin_for', on_delete=PROTECT)
     destination = ForeignKey(Station, related_name='destination_for', on_delete=PROTECT)
+    starttime = IntegerField()
+    endtime = IntegerField()
+    mon = BooleanField()
+    tue = BooleanField()
+    wed = BooleanField()
+    thu = BooleanField()
+    fri = BooleanField()
+    sat = BooleanField()
+    sun = BooleanField()
     def __str__(self):
-        return self.tender.id + ": " + self.orgin.name + "->" + self.destination.name
+        days = "".join([("X" if self.mon else "O"),
+            ("X" if self.tue else "O"),
+            ("X" if self.wed else "O"),
+            ("X" if self.thu else "O"),
+            ("X" if self.fri else "O"),
+            "|",
+            ("X" if self.sat else "O"),
+            ("X" if self.sun else "O"),
+            ])
+        return str(self.line.tender.id) + ": " + self.line.name + " " + days + " " + str(self.starttime) + "-" + str(self.endtime) + " " + str(self.frequency) + " " + self.orgin.name + "->" + self.destination.name + "(" + str(self.demand) + " " + self.ttype +")"

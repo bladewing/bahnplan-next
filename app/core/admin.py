@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from core.models import Vehicle, VehicleType, WorkshopCategory, Company, Tender, Route, Workshop, Station, TrackLimit, Criterion, TransportRequirement, Track
+from core.models import Vehicle, VehicleType, WorkshopCategory, Company, Tender, Route, Workshop, Station, TrackLimit, Criterion, TransportRequirement, Track, Line
 
 admin.site.register(Vehicle)
 admin.site.register(Workshop)
@@ -15,8 +15,8 @@ class TrackInline(admin.TabularInline):
 class TrackLimitInline(admin.TabularInline):
     model = TrackLimit
 
-class TransportRequirementInline(admin.TabularInline):
-    model = TransportRequirement
+class LineInline(admin.TabularInline):
+    model = Line
 
 class WorkshopInline(admin.TabularInline):
     model = Tender.workshops.through
@@ -28,7 +28,7 @@ class TenderAdmin(admin.ModelAdmin):
     list_display=('get_route_name', 'id' , 'start_date', 'end_date', 'route', 'text')
     readonly_fields=('id',)
     fields=('id', 'start_date', 'end_date', 'route', 'text')
-    inlines=[TrackLimitInline, TransportRequirementInline, WorkshopInline, CriterionInline]
+    inlines=[TrackLimitInline, LineInline, WorkshopInline, CriterionInline]
     def get_route_name(self, obj):
         return obj.route.name
     get_route_name.short_description = 'route'
@@ -36,6 +36,13 @@ class TenderAdmin(admin.ModelAdmin):
 
 admin.site.register(Tender, TenderAdmin)
 
+class TransportRequirementInline(admin.TabularInline):
+    model = TransportRequirement
+
+class LineAdmin(admin.ModelAdmin):
+    inlines=[TransportRequirementInline]
+
+admin.site.register(Line, LineAdmin)
 
 class CompanyAdmin(admin.ModelAdmin):
     # fieldsets = [
