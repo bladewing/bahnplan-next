@@ -48,6 +48,7 @@ class CompanyModelTest(TestCase):
         with self.assertRaises(IntegrityError, msg="Adding a company with existing abbreviation, should not work"):
             Company.create_owned_company(name="Tolle Bahn", abbrev="TB", owners=self.user)
 
-    def test_create_company_string_length(self):
+    def test_create_company_to_string(self):
         self.login_user()
-        Company.create_owned_company(name="", abbrev="TB", owners=self.user)
+        company = Company.create_owned_company(name="TestBahn", abbrev="TB", owners=self.user)
+        self.assertEquals(company.__str__(), "TestBahn (TB)")
