@@ -2,14 +2,7 @@ from django.db.models import *
 
 from core.models.company import Company
 from core.models.route import Route
-
-
-class Station(Model):
-    """Database-Represention of a station. Name has to be unique"""
-    name = CharField(max_length=255, unique=True)
-
-    def __str__(self):
-        return self.name
+from core.models.station import Station
 
 
 class WorkshopCategory(Model):
