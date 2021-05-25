@@ -1,8 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
+from core.models import Company
 from .forms import CompanyCreationForm
-from .models import Company
 
 
 def index_view(request):
