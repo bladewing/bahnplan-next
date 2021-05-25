@@ -3,21 +3,8 @@ from django.db.models import *
 from core.models.company import Company
 from core.models.route import Route
 from core.models.station import Station
+from core.models.workshop import Workshop
 from core.models.workshop_category import WorkshopCategory
-
-
-class Workshop(Model):
-    """Workshops, have to be attached to an existing station and can have WorkshopCategories"""
-    name = CharField(max_length=255)
-    station = ForeignKey(Station, on_delete=PROTECT)
-    categories = ManyToManyField(WorkshopCategory)
-
-    def __str__(self):
-        catstring = " ("
-        for category in self.categories.all():
-            catstring = catstring + category.name
-        catstring = catstring + ")"
-        return self.name + " at " + self.station.name + catstring
 
 
 class Tender(Model):
