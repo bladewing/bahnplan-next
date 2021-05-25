@@ -3,23 +3,10 @@ from django.core.validators import MinLengthValidator
 from django.db.models import *
 
 
-# Probably not needed since the Django User Model brings enough with it.
-#
-# class BPUser(Model):
-#    """extension for django-included user from django.contrib.auth.models"""
-#    user = OneToOneField(get_user_model(), on_delete=CASCADE)
-#    #accepted = BooleanField # Unnötig, da über Zugriffslevel abbildbar.
-#
-
-
 class Company(Model):
-    """company, to be owned by an user"""
     name = CharField(max_length=255, validators=[MinLengthValidator(1)], default=None, unique=True)
     abbrev = CharField(max_length=8, validators=[MinLengthValidator(1)], unique=True)
     ownership = ManyToManyField(get_user_model())
-
-    # TODO unsure, if the above will work, but you shouldn't reference the user model directly:
-    # See https://github.com/PyCQA/pylint-django/issues/278
 
     def __str__(self):
         return self.name + ' (' + self.abbrev + ')'
@@ -44,21 +31,21 @@ class Route(Model):
 
     CARGO = "CG"
     LOCAL = "LO"
-    INTERCITY = "IC"
+    LONG_DISTANCE = "IC"
     TYPE_CHOICES = (
         (CARGO, 'Cargo'),
         (LOCAL, 'Local'),
-        (INTERCITY, 'Intercity'),
+        (LONG_DISTANCE, 'Long Distance'),
     )
     operator = ForeignKey(Company, null=True, blank=True, on_delete=SET_NULL)
     name = CharField(max_length=127)
-    ttype = CharField(max_length=2, choices=TYPE_CHOICES)
+    type = CharField(max_length=2, choices=TYPE_CHOICES)
     revenue_per_week = DecimalField(max_digits=17, decimal_places=2, blank=True, null=True)
     start_date = DateTimeField(null=True, blank=True)  # was default=now, I think this would't be a good design decision
     end_date = DateTimeField(null=True, blank=True)
 
     def __str__(self):
-        return self.ttype + " " + self.name + " (" + self.operator.name + ")"
+        return self.type + " " + self.name + " (" + self.operator.name + ")"
 
 
 class Station(Model):
