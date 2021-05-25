@@ -3,15 +3,7 @@ from django.db.models import *
 from core.models.company import Company
 from core.models.route import Route
 from core.models.station import Station
-
-
-class WorkshopCategory(Model):
-    """WorkShopCategories defines, which vehicles can be services in which workshops"""
-    name = CharField(max_length=255)
-    vocal_name = CharField(max_length=255)
-
-    def __str__(self):
-        return self.vocal_name + " (" + self.name + ")"
+from core.models.workshop_category import WorkshopCategory
 
 
 class Workshop(Model):
