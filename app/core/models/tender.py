@@ -3,6 +3,7 @@ from django.db.models import *
 from core.models.route import Route
 from core.models.workshop import Workshop
 
+
 class Tender(Model):
     """Tenders where Users can apply for"""
     route = ForeignKey(Route, on_delete=PROTECT)

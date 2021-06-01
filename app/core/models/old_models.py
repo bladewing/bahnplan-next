@@ -7,19 +7,6 @@ from core.models.tender import Tender
 from core.models.workshop_category import WorkshopCategory
 
 
-class TrackLimit(Model):
-    """The usage of a station by each tender can be limited with TrackLimit"""
-    tender = ForeignKey(Tender, on_delete=CASCADE)
-    station = ForeignKey(Station, on_delete=PROTECT, related_name='+')
-    number = IntegerField(default=2)
-    max_usage_in_minutes = IntegerField(null=True)
-    time_to_reach_in_minutes = IntegerField(null=True)
-
-    def __str__(self):
-        return self.station.name + " (" + str(self.number) + "x " + str(self.max_usage_in_minutes) + ", " + str(
-            self.time_to_reach_in_minutes) + ")"
-
-
 class VehicleType(Model):
     """From a VehicleType any number of vehicles can be created. VehicleType defines the "static" costs of a Vehicle, while the Vehicles class contains the parameters of the instance"""
     name = CharField(max_length=127)
