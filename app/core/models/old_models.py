@@ -4,23 +4,7 @@ from core.models.company import Company
 from core.models.route import Route
 from core.models.station import Station
 from core.models.tender import Tender
-from core.models.workshop_category import WorkshopCategory
-
-
-class VehicleType(Model):
-    """From a VehicleType any number of vehicles can be created. VehicleType defines the "static" costs of a Vehicle, while the Vehicles class contains the parameters of the instance"""
-    name = CharField(max_length=127)
-    vocal_name = CharField(max_length=255)
-    workshop_categorie = ForeignKey(WorkshopCategory, on_delete=PROTECT)
-    vmax = IntegerField()
-    total_price = DecimalField(max_digits=12, decimal_places=2)
-    cost_per_km = DecimalField(max_digits=12, decimal_places=6)
-    cost_per_hour = DecimalField(max_digits=12, decimal_places=6)
-    multi_head_limit = IntegerField()
-    cargo_tons_limit = IntegerField()
-
-    def __str__(self):
-        return self.name + " (" + self.vocal_name + ")"
+from core.models.vehicle_type import VehicleType
 
 
 class LeasingMode(Model):
