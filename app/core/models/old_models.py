@@ -2,21 +2,11 @@ from django.db.models import *
 
 from core.models.company import Company
 from core.models.leasing_mode import LeasingMode
+from core.models.plan import Plan
 from core.models.route import Route
 from core.models.station import Station
 from core.models.tender import Tender
 from core.models.vehicle_type import VehicleType
-
-
-class Plan(Model):
-    """Class to hold a file with the plan of an application an attach it to a tender"""
-    creator = ForeignKey(Company, on_delete=PROTECT)
-    file = FileField()
-    tender = ForeignKey(Tender, on_delete=PROTECT)  # TODO should be optional
-    route = ForeignKey(Route, on_delete=PROTECT, null=True)  # plan should be active if it has a route
-
-    def __str__(self):
-        return "" + self.id.__str__() + self.tender.__str__() + " (" + self.creator.abbrev + ")"
 
 
 class Vehicle(Model):
