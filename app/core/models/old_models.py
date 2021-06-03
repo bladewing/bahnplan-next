@@ -1,21 +1,11 @@
 from django.db.models import *
 
 from core.models.company import Company
+from core.models.leasing_mode import LeasingMode
 from core.models.route import Route
 from core.models.station import Station
 from core.models.tender import Tender
 from core.models.vehicle_type import VehicleType
-
-
-class LeasingMode(Model):
-    """yearly and weekly costs to own a vehicle"""
-    name = CharField(max_length=127)
-    vocal_name = CharField(max_length=255)
-    factor_yearly = DecimalField(max_digits=6, decimal_places=5)
-    factor_weekly = DecimalField(max_digits=6, decimal_places=5)
-
-    def __str__(self):
-        return self.name
 
 
 class Plan(Model):
@@ -83,17 +73,10 @@ class TransportRequirement(Model):
     ONCE = "ONCE"
     HOURLY = "HRLY"
     DAILY = "DALY"
-    FREQUENCY_CHOICES = (
-        (ONCE, 'once'),
-        (HOURLY, 'hourly'),
-        (DAILY, 'daily'),
-    )
+    FREQUENCY_CHOICES = ((ONCE, 'once'), (HOURLY, 'hourly'), (DAILY, 'daily'),)
     PASSENGERS = "PAS"
     CARGO = "CGO"
-    TYPE_CHOICES = (
-        (PASSENGERS, 'PAS'),
-        (CARGO, 'CGO'),
-    )
+    TYPE_CHOICES = ((PASSENGERS, 'PAS'), (CARGO, 'CGO'),)
     line = ForeignKey(Line, on_delete=CASCADE)
     ttype = CharField(max_length=3, choices=TYPE_CHOICES)
     demand = IntegerField()
@@ -111,15 +94,9 @@ class TransportRequirement(Model):
     sun = BooleanField()
 
     def __str__(self):
-        days = "".join([("X" if self.mon else "O"),
-                        ("X" if self.tue else "O"),
-                        ("X" if self.wed else "O"),
-                        ("X" if self.thu else "O"),
-                        ("X" if self.fri else "O"),
-                        "|",
-                        ("X" if self.sat else "O"),
-                        ("X" if self.sun else "O"),
-                        ])
+        days = "".join([("X" if self.mon else "O"), ("X" if self.tue else "O"), ("X" if self.wed else "O"),
+                        ("X" if self.thu else "O"), ("X" if self.fri else "O"), "|", ("X" if self.sat else "O"),
+                        ("X" if self.sun else "O"), ])
         return str(self.line.tender.id) + ": " + self.line.name + " " + days + " " + str(self.starttime) + "-" + str(
             self.endtime) + " " + str(
             self.frequency) + " " + self.orgin.name + "->" + self.destination.name + "(" + str(
