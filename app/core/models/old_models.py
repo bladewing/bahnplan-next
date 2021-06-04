@@ -5,16 +5,6 @@ from core.models.station import Station
 from core.models.tender import Tender
 
 
-class Criterion(Model):
-    """Ciriterion to determine the ranking of tender applications"""
-    tender = ForeignKey(Tender, on_delete=CASCADE)
-    name = CharField(max_length=127)
-    weight = DecimalField(max_digits=12, decimal_places=10)
-
-    def __str__(self):
-        return self.name
-
-
 class Track(Model):
     """Railway line which can be used in tenders resp. which are allows to used in tender applications"""
     tender = ForeignKey(Tender, on_delete=CASCADE)
