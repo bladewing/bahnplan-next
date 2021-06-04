@@ -4,51 +4,17 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+    dependencies = [('core', '0005_auto_20210117_1717'), ]
 
-    dependencies = [
-        ('core', '0005_auto_20210117_1717'),
-    ]
-
-    operations = [
-        migrations.RenameField(
-            model_name='route',
-            old_name='type',
-            new_name='ttype',
-        ),
-        migrations.AddField(
-            model_name='tender',
-            name='end_date',
-            field=models.DateTimeField(blank=True, null=True),
-        ),
-        migrations.AddField(
-            model_name='tender',
-            name='start_date',
-            field=models.DateTimeField(blank=True, null=True),
-        ),
-        migrations.AddField(
-            model_name='tender',
-            name='text',
-            field=models.TextField(null=True),
-        ),
-        migrations.AddField(
-            model_name='tracklimit',
-            name='max_usage_in_minutes',
-            field=models.IntegerField(null=True),
-        ),
-        migrations.AddField(
-            model_name='tracklimit',
-            name='number',
-            field=models.IntegerField(default=2),
-        ),
-        migrations.AddField(
-            model_name='tracklimit',
-            name='time_to_reach_in_minutes',
-            field=models.IntegerField(null=True),
-        ),
-        migrations.AddField(
-            model_name='vehicle',
-            name='leased_since',
-            field=models.DateTimeField(default="1970-01-01"),
-            preserve_default=False,
-        ),
-    ]
+    operations = [migrations.RenameField(model_name='route', old_name='type', new_name='ttype', ),
+        migrations.AddField(model_name='tender', name='end_date', field=models.DateTimeField(blank=True, null=True), ),
+        migrations.AddField(model_name='tender', name='start_date',
+            field=models.DateTimeField(blank=True, null=True), ),
+        migrations.AddField(model_name='tender', name='text', field=models.TextField(null=True), ),
+        migrations.AddField(model_name='tracklimit', name='max_usage_in_minutes',
+            field=models.IntegerField(null=True), ),
+        migrations.AddField(model_name='tracklimit', name='number', field=models.IntegerField(default=2), ),
+        migrations.AddField(model_name='tracklimit', name='time_to_reach_in_minutes',
+            field=models.IntegerField(null=True), ),
+        migrations.AddField(model_name='vehicle', name='leased_since', field=models.DateTimeField(),
+            preserve_default=False, ), ]
