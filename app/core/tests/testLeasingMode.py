@@ -2,7 +2,7 @@ from decimal import Decimal
 
 from django.test import TestCase
 
-from core.models import LeasingMode
+from core.models.leasing_mode import LeasingMode
 
 
 class TestLeasingMode(TestCase):
