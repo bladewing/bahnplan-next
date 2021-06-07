@@ -12,9 +12,9 @@ from core.tests.utils import login_user
 class RouteModelTest(TestCase):
     DEMO_ROUTE_NAME = 'KBS 100 Hamburg - Rostock'
 
-    def test_create_valid_minimal(self):
+    def test_create_valid_min(self):
         Route.objects.create(name=self.DEMO_ROUTE_NAME, type=Route.LONG_DISTANCE, revenue_per_week=5000.00,
-            start_date=now(), end_date=now() + timedelta(days=2 * 365))
+                             start_date=now(), end_date=now() + timedelta(days=2 * 365))
 
     def test_create_valid_full(self):
         Route.objects.create(
@@ -22,9 +22,9 @@ class RouteModelTest(TestCase):
             name=self.DEMO_ROUTE_NAME, type=Route.LONG_DISTANCE, revenue_per_week=5000.00, start_date=now(),
             end_date=now() + timedelta(days=2 * 365))
 
-    def test_to_string_minimal(self):
+    def test_to_string_min(self):
         route = Route.objects.create(name=self.DEMO_ROUTE_NAME, type=Route.LONG_DISTANCE, revenue_per_week=5000.00,
-            start_date=now(), end_date=now() + timedelta(days=2 * 365))
+                                     start_date=now(), end_date=now() + timedelta(days=2 * 365))
         self.assertEquals(route.__str__(), 'IC KBS 100 Hamburg - Rostock')
 
     def test_to_string_full(self):

@@ -22,7 +22,7 @@ class TenderModelTest(TestCase):
         Workshop.objects.create(name='Bw Hagen', station=Station.objects.get(name="Hagen Hbf"))
 
     @staticmethod
-    def test_create_valid_bare():
+    def test_create_valid_min():
         Tender.objects.create(route=Route.objects.get(name=TEST_ROUTE))
 
     @staticmethod
