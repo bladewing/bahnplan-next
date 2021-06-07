@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from core.models import WorkshopCategory
+from core.models.workshop_category import WorkshopCategory
 
 
 class WorkshopCategoryModelTest(TestCase):

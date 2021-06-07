@@ -3,10 +3,11 @@ from decimal import Decimal
 
 from django.test import TestCase
 
-from core.models import WorkshopCategory, Company
+from core.models.company import Company
 from core.models.leasing_mode import LeasingMode
 from core.models.vehicle import Vehicle
 from core.models.vehicle_type import VehicleType
+from core.models.workshop_category import WorkshopCategory
 
 
 class TestVehicle(TestCase):

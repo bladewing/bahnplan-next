@@ -3,7 +3,10 @@ from datetime import timedelta
 from django.test import TestCase
 from django.utils.timezone import now
 
-from core.models import Route, Station, Workshop, Tender
+from core.models.route import Route
+from core.models.station import Station
+from core.models.tender import Tender
+from core.models.workshop import Workshop
 
 TEST_WORKSHOP = 'Bw Hagen'
 TEST_ROUTE = 'KBS 100 Hamburg - Rostock'
@@ -24,8 +27,8 @@ class TenderModelTest(TestCase):
 
     @staticmethod
     def test_create_valid_full():
-        Tender.objects.create(route=Route.objects.get(name=TEST_ROUTE), text=TEST_DESCRIPTION,
-                              start_date=now(), end_date=now() + timedelta(days=2 * 365))
+        Tender.objects.create(route=Route.objects.get(name=TEST_ROUTE), text=TEST_DESCRIPTION, start_date=now(),
+                              end_date=now() + timedelta(days=2 * 365))
 
     @staticmethod
     def test_add_workshop():

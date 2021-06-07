@@ -1,6 +1,8 @@
 from django.test import TestCase
 
-from core.models import Route, Tender, Station
+from core.models.route import Route
+from core.models.station import Station
+from core.models.tender import Tender
 from core.models.track import Track
 
 MIN_SPEED = 160

@@ -1,6 +1,6 @@
 from django.db.models import Model, ForeignKey, SET_NULL, PROTECT, DateField
 
-from core.models import Company
+from core.models.company import Company
 from core.models.leasing_mode import LeasingMode
 from core.models.plan import Plan
 from core.models.vehicle_type import VehicleType

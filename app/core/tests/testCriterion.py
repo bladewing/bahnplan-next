@@ -1,7 +1,10 @@
 from django.test import TestCase
 
-from core.models import Tender, Workshop, Station, Route
 from core.models.criterion import Criterion
+from core.models.route import Route
+from core.models.station import Station
+from core.models.tender import Tender
+from core.models.workshop import Workshop
 
 TEST_ROUTE = 'KBS 100 Hamburg - Rostock'
 

@@ -2,7 +2,7 @@
 from django.db import IntegrityError
 from django.test import TestCase
 
-from core.models import Company
+from core.models.company import Company
 from core.tests.utils import login_user
 
 

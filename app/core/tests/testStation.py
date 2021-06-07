@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from core.models import Station
+from core.models.station import Station
 
 
 class RouteModelTest(TestCase):

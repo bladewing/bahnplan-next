@@ -1,8 +1,10 @@
 from django.test import TestCase
 
-from core.models import Line, TransportRequirement, Station
+from core.models.line import Line
 from core.models.route import Route
+from core.models.station import Station
 from core.models.tender import Tender
+from core.models.transport_requirement import TransportRequirement
 
 TEST_ROUTE = 'KBS 100 Hamburg - Rostock'
 

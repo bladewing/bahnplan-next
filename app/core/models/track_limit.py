@@ -1,6 +1,7 @@
 from django.db.models import Model, ForeignKey, CASCADE, PROTECT, IntegerField
 
-from core.models import Tender, Station
+from core.models.station import Station
+from core.models.tender import Tender
 
 
 class TrackLimit(Model):

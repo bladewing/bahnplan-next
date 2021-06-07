@@ -1,6 +1,6 @@
 from django.db.models import Model, ForeignKey, CASCADE, CharField, DecimalField
 
-from core.models import Tender
+from core.models.tender import Tender
 
 
 class Criterion(Model):

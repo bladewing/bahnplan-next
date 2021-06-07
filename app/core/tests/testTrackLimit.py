@@ -1,6 +1,10 @@
 from django.test import TestCase
 
-from core.models import *
+from core.models.route import Route
+from core.models.station import Station
+from core.models.tender import Tender
+from core.models.track_limit import TrackLimit
+from core.models.workshop import Workshop
 
 TEST_STATION_NAME = 'Hagen Hbf'
 
@@ -29,13 +33,11 @@ class TestTrackLimit(TestCase):
     def test_to_string_min(self):
         self.test_create_valid_min()
         limit = TrackLimit.objects.get(station=Station.objects.get(name=TEST_STATION_NAME))
-        self.assertEqual(limit.__str__(),
-                         TEST_STATION_NAME + " (" + str(TrackLimit.DEFAULT_NUMBER) + "x " + str(
-                             TrackLimit.DEFAULT_MAX_USAGE) + " min)")
+        self.assertEqual(limit.__str__(), TEST_STATION_NAME + " (" + str(TrackLimit.DEFAULT_NUMBER) + "x " + str(
+            TrackLimit.DEFAULT_MAX_USAGE) + " min)")
 
     def test_to_string_full(self):
         self.test_create_valid_full()
         limit = TrackLimit.objects.get(station=Station.objects.get(name=TEST_STATION_NAME))
-        self.assertEqual(limit.__str__(),
-                         TEST_STATION_NAME + " (" + str(5) + "x " + str(
-                             18) + " min, " + str(3) + " " + TrackLimit.WAY_TO_STRING + ")")
+        self.assertEqual(limit.__str__(), TEST_STATION_NAME + " (" + str(5) + "x " + str(18) + " min, " + str(
+            3) + " " + TrackLimit.WAY_TO_STRING + ")")

@@ -1,6 +1,8 @@
 from django.db.models import Model, ForeignKey, CASCADE, PROTECT, CharField, DecimalField, IntegerField
 
-from core.models import Tender, Station, Route
+from core.models.route import Route
+from core.models.station import Station
+from core.models.tender import Tender
 
 
 class Track(Model):

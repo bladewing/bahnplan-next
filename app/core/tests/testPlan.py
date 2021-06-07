@@ -4,8 +4,10 @@ from django.core.files import File
 from django.core.files.storage import Storage
 from django.test import TestCase
 
-from core.models import Company, Tender, Route
+from core.models.company import Company
 from core.models.plan import Plan
+from core.models.route import Route
+from core.models.tender import Tender
 
 TEST_ROUTE = 'KBS 100 Hamburg - Rostock'
 
