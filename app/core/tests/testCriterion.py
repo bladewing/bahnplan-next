@@ -3,10 +3,7 @@ from django.test import TestCase
 from core.models import Tender, Workshop, Station, Route
 from core.models.criterion import Criterion
 
-TEST_WORKSHOP = 'Bw Hagen'
 TEST_ROUTE = 'KBS 100 Hamburg - Rostock'
-TEST_DESCRIPTION = """Die Stadt Hamburg, die Nahverkehrsgesellschaft Schleswig-Holstein und das Verkehrsministerium 
-    Mecklenburg-Vorpommern schreiben aus."""
 
 
 class TestCriterion(TestCase):

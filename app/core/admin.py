@@ -1,11 +1,12 @@
 # Register your model here.
 from django.contrib import admin
 
-from core.models import Track, Line, Tender, TransportRequirement
+from core.models import Line, Tender, TransportRequirement
 from core.models.company import Company
 from core.models.criterion import Criterion
 from core.models.route import Route
 from core.models.station import Station
+from core.models.track import Track
 from core.models.track_limit import TrackLimit
 from core.models.vehicle import Vehicle
 from core.models.vehicle_type import VehicleType
