@@ -1,9 +1,10 @@
 # Register your model here.
 from django.contrib import admin
 
-from core.models import Line, Tender, TransportRequirement
+from core.models import Tender, TransportRequirement
 from core.models.company import Company
 from core.models.criterion import Criterion
+from core.models.line import Line
 from core.models.route import Route
 from core.models.station import Station
 from core.models.track import Track
