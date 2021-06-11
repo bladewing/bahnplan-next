@@ -1,3 +1,28 @@
 .navbar-brand {
     font-family: 'sans-serif';
-  }
+}
+
+.breadcrumb-item {
+    color: lightgrey;
+}
+
+.navbar-breadcrumb {
+    padding: 0 0 0 0;
+    margin-bottom: 1em;
+}
+
+.card-header, .card-footer {
+    color: lightgrey;
+    background-color: darkslategrey;
+}
+
+.login_btn {
+    color: lightgrey;
+    background-color: darkslategrey;
+    width: 100px;
+}
+
+.login_btn:hover {
+    color: black;
+    background-color: white;
+}
