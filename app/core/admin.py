@@ -41,12 +41,14 @@ class WorkshopInline(admin.TabularInline):
 class CriterionInline(admin.TabularInline):
     model = Criterion
 
+class TrackInline(admin.TabularInline):
+    model = Track
 
 class TenderAdmin(admin.ModelAdmin):
     list_display = ('get_route_name', 'id', 'start_date', 'end_date', 'route', 'text')
     readonly_fields = ('id',)
     fields = ('id', 'start_date', 'end_date', 'route', 'text')
-    inlines = [TrackLimitInline, LineInline, WorkshopInline, CriterionInline]
+    inlines = [LineInline, TrackLimitInline, TrackInline, WorkshopInline, CriterionInline]
 
     def get_route_name(self, obj):
         return obj.route.name
@@ -65,9 +67,12 @@ class TransportRequirementInline(admin.TabularInline):
 class LineAdmin(admin.ModelAdmin):
     inlines = [TransportRequirementInline]
 
-
 admin.site.register(Line, LineAdmin)
 
+class TrackAdmin(admin.ModelAdmin):
+    model = Track
+
+admin.site.register(Track, TrackAdmin)
 
 class CompanyAdmin(admin.ModelAdmin):
     # fieldsets = [

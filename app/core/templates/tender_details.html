@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{{ tender.route.name }}</h2>
+    <div class="container">
+        <div class="container-sm py-3">Abgabefrist: {{tender.end_date}}<br>{{ tender.text }}</div>
+        <div class="row">
+            <div class="p-3 col-sm-2">Linien</div>
+            <div class="p-3 col-md">{% for line in lines %} {{line.name}} {{line.course}} <br> {% endfor %}</div>
+        </div>
+        <div class="row">
+            <div class="p-3 col-sm-2">Bahnsteignutzung</div>
+            <div class="p-3 col-md">{% for platform in platforms %} {{platform}} <br> {% endfor %}</div>
+        </div>
+        <div class="row">
+            <div class="p-3 col-sm-2">Serviceeinrichtungen</div>
+            <div class="p-3 col-md">{% for facility in servicefacilities %} {{facility}} <br> {% endfor %}</div>
+        </div>
+        <div class="row">
+            <div class="p-3 col-sm-2">Strecken</div>
+            <div class="p-3 col-md">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Streckenabschnitt</th>
+                            <th scope="col">Fahrzeit</th>
+                            <th scope="col">Vmin</th>
+                            <th scope="col">Gleise</th>
+                            <th scope="col">Entfernung</th>
+                            <th scope="col">Preis</th>
+                            <th scope="col">Beschreibung</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for track in tracks %}
+                        <tr>
+                            <td>{{track.start}} - {{track.end}}</td>
+                            <td>{{track.travel_time_in_minutes}}</td>
+                            <td>{{track.min_speed}}</td>
+                            <td>{{track.tracks}}</td>
+                            <td>{{track.length|floatformat:3}}</td>
+                            <td>{{track.price|floatformat:2}}</td>
+                            <td>{{track.description}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="p-3 col-sm-2">Kriterien</div>
+            <div class="p-3 col-md">{% for criterion in criterions %} {{criterion.name}} ({{criterion.weight|floatformat:0}}%)<br> {{criterion.description}} <br>{% endfor %}</div>
+        </div>
+    </div>
+{% endblock %}
