@@ -18,7 +18,7 @@ def create_company_view(request):
     if request.method == "POST":
         form = CompanyCreationForm(request.POST)
         if form.is_valid():
-            Company.create_owned_company(form.name, form.abbrev, request.user)
+            Company.create_owned_company(form.data['name'], form.data['abbrev'], request.user)
             return redirect('index')
     else:
         form = CompanyCreationForm
