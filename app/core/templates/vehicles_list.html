@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Fahrzeuge in Besitz</h2>
+    <form method="post" class="post-form">
+        {% csrf_token %}
+        <table class="table text-center">
+            <thead>
+                <tr>
+                    <th scope="col" class="text-left">Fahrzeug-Id</th>
+                    <th scope="col">Strecke</th>
+                    <th scope="col">Leasing-Typ</th>
+                    <th scope="col">Auswahl</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for v in vehicles %}
+                <tr>
+                    <td class="text-left">{{ v.type.name }}-{{ v.pk }}</td>
+                    <td>{{ v.plan.route.name }}</td>
+                    <td class="text-center">Leasing {{ v.leasing_mode.name }} </td>
+                    <td class="text-center"><input type="checkbox" name="selected_vehicles[{{ v.pk }}]"> </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </form>
+{% endblock %}

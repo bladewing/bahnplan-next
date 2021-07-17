@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db.models import Model, ForeignKey, SET_NULL, PROTECT, DateField
 
 from core.models.company import Company
@@ -17,3 +19,10 @@ class Vehicle(Model):
 
     def __str__(self):
         return f"{self.type.name}-{self.id:03d}"
+
+    @classmethod
+    def create_vehicle(cls, vehicle_type, leasing_mode, amount, owner):
+        for i in range(0, amount):
+            new_vehicle = Vehicle(owner=owner, type=vehicle_type, leasing_mode=leasing_mode,
+                                  leased_since=datetime.now())
+            new_vehicle.save()

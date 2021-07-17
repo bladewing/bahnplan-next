@@ -3,6 +3,7 @@ from django.contrib import admin
 
 from core.models.company import Company
 from core.models.criterion import Criterion
+from core.models.leasing_mode import LeasingMode
 from core.models.line import Line
 from core.models.route import Route
 from core.models.station import Station
@@ -41,8 +42,10 @@ class WorkshopInline(admin.TabularInline):
 class CriterionInline(admin.TabularInline):
     model = Criterion
 
+
 class TrackInline(admin.TabularInline):
     model = Track
+
 
 class TenderAdmin(admin.ModelAdmin):
     list_display = ('get_route_name', 'id', 'start_date', 'end_date', 'route', 'text')
@@ -67,12 +70,16 @@ class TransportRequirementInline(admin.TabularInline):
 class LineAdmin(admin.ModelAdmin):
     inlines = [TransportRequirementInline]
 
+
 admin.site.register(Line, LineAdmin)
+
 
 class TrackAdmin(admin.ModelAdmin):
     model = Track
 
+
 admin.site.register(Track, TrackAdmin)
+
 
 class CompanyAdmin(admin.ModelAdmin):
     # fieldsets = [
@@ -93,3 +100,9 @@ class RouteAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Route, RouteAdmin)
+
+class LeasingModeAdmin(admin.ModelAdmin):
+    list_display = ('name', 'factor_yearly', 'factor_weekly')
+
+
+admin.site.register(LeasingMode, LeasingModeAdmin)

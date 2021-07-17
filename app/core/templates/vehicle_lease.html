@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Beschaffung von Fahrzeugen des Typs {{ vehicle_type.name }}</h2>
+    <form method="post" class="post-form" id="vehicleLeaseForm">
+        {% csrf_token %}
+        <input type="hidden" id="vehicleType" name="vehicleType" value="{{ vehicle_type.pk }}">
+        <div class="input-group m-1">
+            <div class="input-group-prepend">
+                <label for="amount" class="input-group-text">Anzahl</label>
+            </div>
+            <input type="text" class="form-control" id="amount" name="amount">
+        </div>
+        <div class="input-group m-1">
+            <div class="input-group-prepend">
+                <label for="leasingMode" class="input-group-text">Leasingmodell</label>
+            </div>
+                {% for leasing_mode in leasing_modes %}
+                    <label class="btn-outline btn-outline-secondary form-control" for="leasingmode{{ leasing_mode.pk }}"><input type="radio" class="btn-check m-1" name="leasingMode" value="{{ leasing_mode.pk }}" id="leasingmode{{ leasing_mode.pk }}"> Leasing {{ leasing_mode.name }}</label>
+                {% endfor %}
+        </div>
+        <button class="btn btn-danger m-1" type="submit" form="vehicleLeaseForm">Jetzt beschaffen</button>
+    </form>
+{% endblock %}

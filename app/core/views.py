@@ -11,6 +11,9 @@ from core.models.line import Line
 from core.models.criterion import Criterion
 
 from .forms import CompanyCreationForm
+from .models.leasing_mode import LeasingMode
+from .models.vehicle import Vehicle
+from .models.vehicle_type import VehicleType
 
 
 def index_view(request):
@@ -32,9 +35,11 @@ def create_company_view(request):
         form = CompanyCreationForm
     return render(request, 'create_company.html', {'form': form})
 
+
 def tenders_list_view(request):
     tenders = Tender.objects.filter(start_date__lte=datetime.datetime.now()).order_by('end_date')
     return render(request, 'tenders_list.html', {'tenders': tenders})
+
 
 def tenders_detail_view(request, pk):
     tender = get_object_or_404(Tender, pk=pk)
@@ -50,4 +55,29 @@ def tenders_detail_view(request, pk):
         'lines': lines,
         'tracks': tracks,
         'criterions': criterions
-        })
+    })
+
+
+def vehicle_types_list_view(request):
+    vehicle_types = VehicleType.objects.all()
+    return render(request, 'vehicle_types_list.html', {'vehicle_types': vehicle_types})
+
+
+def vehicle_list_view(request):
+    vehicles = Vehicle.objects.filter(owner=request.user.player.activecompany)
+    return render(request, 'vehicles_list.html', {'vehicles': vehicles})
+
+
+def vehicle_lease_view(request, pk):
+    # TODO error when form input is not valid/no lease happend
+    if request.method == "POST":
+        vehicle_type = VehicleType.objects.get(pk=request.POST.get("vehicleType"))
+        amount = int(request.POST.get("amount"))
+        leasing_mode = LeasingMode.objects.get(pk=request.POST.get("leasingMode"))
+        if amount > 0 and leasing_mode is not None:
+            Vehicle.create_vehicle(vehicle_type, leasing_mode, amount, request.user.player.activecompany)
+            return redirect('vehicletypeslist')
+    else:
+        vehicle_type = VehicleType.objects.get(pk=pk)
+        leasing_modes = LeasingMode.objects.all()
+        return render(request, 'vehicle_lease.html', {'vehicle_type': vehicle_type, 'leasing_modes': leasing_modes})
