@@ -1,11 +1,12 @@
 from django.contrib.auth import get_user_model
 from django.core.validators import MinLengthValidator
-from django.db.models import Model, CharField, ManyToManyField
+from django.db.models import Model, CharField, ManyToManyField, DateField
 
 
 class Company(Model):
     name = CharField(max_length=255, validators=[MinLengthValidator(1)], default=None, unique=True)
     abbrev = CharField(max_length=8, validators=[MinLengthValidator(1)], unique=True)
+    creation_date = DateField(auto_now_add=True)
     ownership = ManyToManyField(get_user_model())
 
     def __str__(self):

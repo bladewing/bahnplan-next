@@ -18,4 +18,4 @@ class Route(Model):
     end_date = DateTimeField(null=True, blank=True)
 
     def __str__(self):
-        return self.type + " " + self.name + (" (" + self.operator.name + ")" if self.operator is not None else "")
+        return self.name + (" (" + self.operator.name + ")" if self.operator is not None else "")

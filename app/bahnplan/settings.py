@@ -30,15 +30,20 @@ ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "127.0.0.1").split(" ")
 
 # Application definition
 
-INSTALLED_APPS = ['core.apps.CoreConfig', 'fontawesome-free', "bootstrap5", 'widget_tweaks', 'django.contrib.admin',
-                  'django.contrib.auth', 'django.contrib.contenttypes', 'django.contrib.sessions',
-                  'django.contrib.messages', 'django.contrib.staticfiles',
-
-                  #    'django_extensions',
-
-                  'accounts',  # 'core',
-
-                  ]
+INSTALLED_APPS = [
+    'core.apps.CoreConfig',
+    'accounts',
+    'fontawesome-free',
+    "bootstrap5",
+    'widget_tweaks',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.humanize',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+]
 
 MIDDLEWARE = ['django.middleware.security.SecurityMiddleware', 'django.contrib.sessions.middleware.SessionMiddleware',
               'django.middleware.common.CommonMiddleware', 'django.middleware.csrf.CsrfViewMiddleware',

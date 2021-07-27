@@ -18,31 +18,52 @@
 </head>
 <body>
 {% block body %}
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{% url 'index' %}">Bahnplan</a>
+            <a class="navbar-brand" href="{% url 'index' %}"> <img src="{% static 'logo.svg' %}" alt="Logo"
+                                                                   height="50pt"> </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#mainMenu" aria-controls="mainMenu"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="mainMenu">
+            <div class="collapse navbar-collapse text-right" id="mainMenu">
                 <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Startseite</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Infozentrale</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Betrieb</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Gesellschaftsbereich</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Aktuelles</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Forum</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Chat</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userMenu" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">{{ user.username }}</a>
+                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="userMenu">
+                            <a class="dropdown-item" href="{% url 'createcompany' %}">Unternehmen erstellen</a>
+                            <div class="dropdown-divider"></div>
+                        </div>
+                    </li>
                     <li class="nav-item">
                         {% if user.is_authenticated %}
                             <a href="{% url 'logout' %}" class="btn btn-outline-secondary">Log Out</a>
                         {% else %}
                             <a href="{% url 'login' %}" class="btn btn-outline-secondary">Log In</a>
                         {% endif %}
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="userMenu" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false">{{ user.username }}</a>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
-                            <a class="dropdown-item" href="{% url 'createcompany' %}">Unternehmen erstellen</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{% url 'logout' %}">Ausloggen</a>
-                        </div>
                     </li>
                 </ul>
             </div>
@@ -54,9 +75,9 @@
             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     {% block breadcrumb %}
-                        <li class="breadcrumb-item">Bahnplan</li>
-                        <li class="breadcrumb-item">Breadcrumb</li>
-                        <li class="breadcrumb-item active" aria-current="page">Navigation</li>
+                        {% for breadcrumb in breadcrumbs %}
+                            <li class="breadcrumb-item"><a href="{{ breadcrumb.link }}">{{ breadcrumb.name }}</a></li>
+                        {% endfor %}
                     {% endblock %}
                 </ol>
             </nav>
@@ -64,7 +85,19 @@
     </nav>
     {% block content %}
     {% endblock %}
-    </div>
+    <footer class="text-center text-lg-start bg-dark text-muted">
+        <section class="">
+            <div class="container text-center text-md-start mt-5">
+                <div class="row mt-3">
+                    <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+                        <a class="text-white" href="#">Kontakt</a>
+                    </div>
+                    <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+                        <a class="text-white" href="#">Impressum</a>
+                    </div>
+                </div>
+            </div>
+    </footer>
 {% endblock body %}
 </body>
 </html>

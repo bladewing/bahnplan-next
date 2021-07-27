@@ -25,10 +25,10 @@ class RouteModelTest(TestCase):
     def test_to_string_min(self):
         route = Route.objects.create(name=self.DEMO_ROUTE_NAME, type=Route.LONG_DISTANCE, revenue_per_week=5000.00,
                                      start_date=now(), end_date=now() + timedelta(days=2 * 365))
-        self.assertEquals(route.__str__(), 'IC KBS 100 Hamburg - Rostock')
+        self.assertEquals(route.__str__(), 'KBS 100 Hamburg - Rostock')
 
     def test_to_string_full(self):
         route = Route(operator=Company.create_owned_company(name="Testbahn", abbrev="TB", owners=login_user(self)),
                       name=self.DEMO_ROUTE_NAME, type=Route.LONG_DISTANCE, revenue_per_week=5000.00, start_date=now(),
                       end_date=now() + timedelta(days=2 * 365))
-        self.assertEquals(route.__str__(), 'IC KBS 100 Hamburg - Rostock (Testbahn)')
+        self.assertEquals(route.__str__(), 'KBS 100 Hamburg - Rostock (Testbahn)')

@@ -57,4 +57,4 @@ class TestPlan(TestCase):
                 self.assertEquals("1 (TB)", inactive_plan.__str__())
                 active_plan = Plan.objects.create(creator=Company.objects.get(name='Testbahn'), file=self.mock_file,
                                                   tender=self.test_tender, route=self.test_route)
-                self.assertEquals("2 LO KBS 100 Hamburg - Rostock (TB)", active_plan.__str__())
+                self.assertEquals("2 KBS 100 Hamburg - Rostock (TB)", active_plan.__str__())

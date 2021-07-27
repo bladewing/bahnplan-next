@@ -38,4 +38,4 @@ class TenderModelTest(TestCase):
     def test_to_string(self):
         tender = Tender.objects.create(route=Route.objects.get(name=TEST_ROUTE), text=TEST_DESCRIPTION,
                                        start_date=now(), end_date=now() + timedelta(days=2 * 365))
-        self.assertEquals(tender.__str__(), Route.LOCAL + ' ' + TEST_ROUTE)
+        self.assertEquals(tender.__str__(), TEST_ROUTE)
