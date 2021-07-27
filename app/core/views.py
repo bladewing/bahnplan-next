@@ -6,8 +6,8 @@ from django.urls import reverse
 from django.utils import timezone
 from django.views.generic import TemplateView
 
-from core.models.company import Company
 from .forms import CompanyCreationForm
+from .models.company import Company
 from .models.route import Route
 from .models.tender import Tender
 from .models.vehicle import Vehicle
