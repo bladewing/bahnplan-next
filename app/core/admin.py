@@ -10,6 +10,7 @@ from core.models.station import Station
 from core.models.tender import Tender
 from core.models.track import Track
 from core.models.track_limit import TrackLimit
+from core.models.transaction import Transaction
 from core.models.transport_requirement import TransportRequirement
 from core.models.vehicle import Vehicle
 from core.models.vehicle_type import VehicleType
@@ -102,3 +103,5 @@ class LeasingModeAdmin(admin.ModelAdmin):
 
 
 admin.site.register(LeasingMode, LeasingModeAdmin)
+
+admin.site.register(Transaction)

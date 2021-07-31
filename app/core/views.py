@@ -2,6 +2,7 @@ import datetime
 from datetime import timedelta
 
 from django.contrib.auth.decorators import login_required
+from django.db.models import Sum
 from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse
 from django.utils import timezone
@@ -19,6 +20,7 @@ from core.models.vehicle import Vehicle
 from core.models.vehicle_type import VehicleType
 from core.models.workshop import Workshop
 from .forms import CompanyCreationForm
+from .models.transaction import Transaction
 
 
 def index_view(request):
@@ -93,9 +95,17 @@ class IndexView(BreadcrumbTemplateView):
         return Tender.objects.filter(end_date__gt=timezone.now(), end_date__lte=timezone.now() + timedelta(
             weeks=2)).order_by('end_date')
 
-    @staticmethod
-    def profit_this_week():
-        return 0
+    def profit_this_week(self):
+        last_week = timezone.now() - timedelta(days=7)
+        # print(Player.objects.filter(user=self.request.user).active_company)
+        income = Transaction.objects.filter(recipient=self.get_active_company(),
+                                            timestamp__gt=last_week).aggregate(Sum('amount'))
+        spendings = Transaction.objects.filter(payer=self.get_active_company(),
+                                               timestamp__gt=last_week).aggregate(Sum('amount'))
+        return income['amount__sum'] or 0 - spendings['amount__sum'] or 0
+
+    def get_active_company(self):
+        return self.request.user.player.active_company
 
     @staticmethod
     def profit_last_week():
