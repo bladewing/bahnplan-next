@@ -17,4 +17,4 @@ class TestLine(TestCase):
 
     def test_to_string(self):
         line = Line.objects.create(tender=self.tender, name='RE Hamburg - Rostock')
-        self.assertEqual('RE Hamburg - Rostock (LO KBS 100 Hamburg - Rostock)', line.__str__())
+        self.assertEqual('RE Hamburg - Rostock (KBS 100 Hamburg - Rostock)', line.__str__())

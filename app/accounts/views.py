@@ -1,9 +1,12 @@
 from django.contrib.auth import login, authenticate
+from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect
+from django.urls import reverse
 
 from core.models.company import Company
 from .forms import SignUpForm
 from .models import Player
+
 
 
 def signup(request):
@@ -21,6 +24,16 @@ def signup(request):
     else:
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
+
+
+class BreadcrumbsLoginView(LoginView):
+    breadcrumb_name = 'Login'
+    template_name = "login.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({'breadcrumbs': [{'name': self.breadcrumb_name, 'link': reverse('login')}]})
+        return context
 
 
 def switch_company_view(request, pk):

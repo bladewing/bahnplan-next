@@ -1,3 +1,70 @@
 .navbar-brand {
     font-family: 'sans-serif';
-  }
+}
+
+.breadcrumb-item {
+    color: lightgrey;
+}
+
+.navbar-breadcrumb {
+    padding: 0 0 0 0;
+    margin-bottom: 1em;
+}
+
+.card-header, .card-footer {
+    color: lightgrey;
+    background-color: darkslategrey;
+}
+
+.login_btn {
+    color: lightgrey;
+    background-color: darkslategrey;
+    width: 100px;
+}
+
+.login_btn:hover {
+    color: black;
+    background-color: white;
+}
+
+.side-bar-left {
+    background-color: lightgrey;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.side-bar-left h4 {
+    background-color: darkgray;
+    padding-left: 2pt;
+}
+
+.side-bar-left p {
+    padding-left: 2pt;
+}
+
+.side-bar-left-first-item {
+    border-top-right-radius: 25px;
+}
+
+.side-bar-right .row {
+    background-color: lightyellow;
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+    padding-left: 0;
+    padding-right: 0;
+    margin-bottom: 20px;
+}
+
+.side-bar-right ul {
+    margin-left: 10px;
+}
+
+.side-bar-right h4 {
+    background-color: yellowgreen;
+}
+
+.side-bar-right-first-item {
+    border-top-left-radius: 25px;
+}

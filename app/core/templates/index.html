@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load l10n %}
+{% load humanize %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 col-xxl-2 side-bar-left">
+                <h4 class="side-bar-left-first-item">Die nächsten Termine</h4>
+                {% if next_appointments.count == 0 %}
+                    <p>Keine anstehenden Termine.</p>
+                {% else %}
+                    <ul>
+                        {% for tender in next_appointments %}
+                            <li>Ausschreibungsende {{ tender.end_date }}<br> <b>{{ tender }}</b></li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+                <h4>Neue Ausschreibungen</h4>
+                {% if newest_tenders.count == 0 %}
+                    <p>Keine neuen Ausschreibungen.</p>
+                {% else %}
+                    <ul>
+                        {% for tender in newest_tenders %}
+                            <li>Gepostet {{ tender.start_date }}<br> <b>{{ tender }}</b></li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+
+                <h4>Betriebsaufnahmen</h4>
+                {% if next_starts.count == 0 %}
+                    <p>Keine aktuellen Betriebsaufnahmen.</p>
+                {% else %}
+                    <ul>
+                        {% for route in next_starts %}
+                            <li>Beginnt {{ route.start_date }}<br> <b>{{ route }}</b></li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            <div class="col-md-6 col-lg-6 col-xl-8">
+                <h1>Herzlich willkommen bei BahnPlan!</h1>
+                <p>BahnPlan ist ein Onlinespiel, in dem es darum geht, Umlauf- und Fahrpläne zu erstellen. Die
+                    Teilnehmer bewerben sich auf Ausschreibungen. Der jeweils beste Teilnehmer gewinnt die Ausschreibung
+                    und kümmert sich dann um die Beschaffung von Loks und die Errichtung von Betriebswerken. Sobald der
+                    Betrieb aufgenommen wurde, erhält der Spieler regelmäßige Einnahmen.</p>
+
+                <p>Auch außerhalb von Ausschreibungen gibt es Arbeit für den Geschäftsführer eines Verkehrsunternehmens;
+                    so kann z.B. eigenwirtschaftlicher Fernverkehr geplant und gefahren werden. Bitte beachte die Regeln
+                    und die FAQ.</p>
+            </div>
+            <div class="col-md-3 col-xxl-2 side-bar-right">
+                {% if user.is_authenticated %}
+                    <div class="row  side-bar-right">
+                        <h4 class="side-bar-right-first-item">Status EVU</h4>
+                        <ul>
+                            <li>Kontostand: <br> {{ account_balance|floatformat:2|intcomma }}</li>
+                            <li>Gewinn diese Woche: <br> {{ profit_this_week|floatformat:2|intcomma }}</li>
+                            <li>Gewinn letzte Woche: <br> {{ profit_last_week|floatformat:2|intcomma }}</li>
+                        </ul>
+                    </div>
+                {% endif %}
+                <div class="row side-bar-right">
+                    <h4 class="side-bar-right-first-item">BahnPlan-Statistik</h4>
+                    <ul>
+                        <li>{{ number_of_companies }} aktive Gesellschaft{{ number_of_companies|pluralize:"en" }}
+                            davon {{ number_of_new_companies }} Neugründung{{ number_of_new_companies|pluralize:"en" }}
+                        </li>
+                        <li>{{ number_of_routes }} befahrene Streck{{ number_of_routes|pluralize:"en" }}
+                            davon {{ number_of_routes_long_distance }}
+                            Fernverkehr{{ number_of_routes_long_distance|pluralize:"e" }}
+                        </li>
+                        <li>{{ number_of_vehicles }} Züge im Einsatz</li>
+                        <li>{{ number_of_workshops }} Betriebs- und
+                            Ausbesserungswerk{{ number_of_workshops|pluralize:"e" }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
