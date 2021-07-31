@@ -6,7 +6,11 @@ from core.models.criterion import Criterion
 from core.models.leasing_mode import LeasingMode
 from core.models.line import Line
 from core.models.route import Route
+from core.models.station import Station
 from core.models.tender import Tender
+from core.models.track import Track
+from core.models.track_limit import TrackLimit
+from core.models.transport_requirement import TransportRequirement
 from core.models.vehicle import Vehicle
 from core.models.vehicle_type import VehicleType
 from core.models.workshop_category import WorkshopCategory
@@ -14,7 +18,6 @@ from core.models.workshop_category import WorkshopCategory
 admin.site.register(Vehicle)
 admin.site.register(VehicleType)
 admin.site.register(WorkshopCategory)
-admin.site.register(Tender)
 admin.site.register(Station)
 
 
@@ -36,10 +39,6 @@ class WorkshopInline(admin.TabularInline):
 
 class CriterionInline(admin.TabularInline):
     model = Criterion
-
-
-class TrackInline(admin.TabularInline):
-    model = Track
 
 
 class TenderAdmin(admin.ModelAdmin):
@@ -96,6 +95,7 @@ class RouteAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Route, RouteAdmin)
+
 
 class LeasingModeAdmin(admin.ModelAdmin):
     list_display = ('name', 'factor_yearly', 'factor_weekly')
