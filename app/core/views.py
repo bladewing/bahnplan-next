@@ -1,17 +1,26 @@
+import datetime
 from datetime import timedelta
 
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse
 from django.utils import timezone
 from django.views.generic import TemplateView
 
+from core.models.route import Route
+from core.models.vehicle import Vehicle
+from core.models.workshop import Workshop
+from core.models.company import Company
+from core.models.tender import Tender
+from core.models.track_limit import TrackLimit
+from core.models.track import Track
+from core.models.line import Line
+from core.models.criterion import Criterion
+from core.models.leasing_mode import LeasingMode
+from core.models.vehicle_type import VehicleType
+
 from .forms import CompanyCreationForm
-from .models.company import Company
-from .models.route import Route
-from .models.tender import Tender
-from .models.vehicle import Vehicle
-from .models.workshop import Workshop
+
 
 
 def index_view(request):
@@ -37,7 +46,7 @@ def create_company_view(request):
     if request.method == "POST":
         form = CompanyCreationForm(request.POST)
         if form.is_valid():
-            Company.create_owned_company(form.name, form.abbrev, request.user)
+            Company.create_owned_company(form.data['name'], form.data['abbrev'], request.user)
             return redirect('index')
     else:
         form = CompanyCreationForm
@@ -98,3 +107,49 @@ class IndexView(BreadcrumbTemplateView):
     @staticmethod
     def account_balance():
         return 0
+
+def tenders_list_view(request):
+    tenders = Tender.objects.filter(start_date__lte=datetime.datetime.now()).order_by('end_date')
+    return render(request, 'tenders_list.html', {'tenders': tenders})
+
+
+def tenders_detail_view(request, pk):
+    tender = get_object_or_404(Tender, pk=pk)
+    platforms = TrackLimit.objects.filter(tender=tender).filter(time_to_reach_in_minutes=0)
+    servicefacilities = TrackLimit.objects.filter(tender=tender).filter(time_to_reach_in_minutes__gt=0)
+    tracks = Track.objects.filter(tender=tender)
+    lines = Line.objects.filter(tender=tender)
+    criterions = Criterion.objects.filter(tender=tender)
+    return render(request, 'tender_details.html', {
+        'tender': tender,
+        'servicefacilities': servicefacilities,
+        'platforms': platforms,
+        'lines': lines,
+        'tracks': tracks,
+        'criterions': criterions
+    })
+
+
+def vehicle_types_list_view(request):
+    vehicle_types = VehicleType.objects.all()
+    return render(request, 'vehicle_types_list.html', {'vehicle_types': vehicle_types})
+
+
+def vehicle_list_view(request):
+    vehicles = Vehicle.objects.filter(owner=request.user.player.activecompany)
+    return render(request, 'vehicles_list.html', {'vehicles': vehicles})
+
+
+def vehicle_lease_view(request, pk):
+    # TODO error when form input is not valid/no lease happend
+    if request.method == "POST":
+        vehicle_type = VehicleType.objects.get(pk=request.POST.get("vehicleType"))
+        amount = int(request.POST.get("amount"))
+        leasing_mode = LeasingMode.objects.get(pk=request.POST.get("leasingMode"))
+        if amount > 0 and leasing_mode is not None:
+            Vehicle.create_vehicle(vehicle_type, leasing_mode, amount, request.user.player.activecompany)
+            return redirect('vehicletypeslist')
+    else:
+        vehicle_type = VehicleType.objects.get(pk=pk)
+        leasing_modes = LeasingMode.objects.all()
+        return render(request, 'vehicle_lease.html', {'vehicle_type': vehicle_type, 'leasing_modes': leasing_modes})

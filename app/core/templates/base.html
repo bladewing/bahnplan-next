@@ -54,6 +54,33 @@
                         <a class="nav-link dropdown-toggle" href="#" id="userMenu" role="button"
                            data-bs-toggle="dropdown" aria-expanded="false">{{ user.username }}</a>
                         <div class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="userMenu">
+            <div class="collapse navbar-collapse" id="mainMenu">
+                <ul class="navbar-nav ml-auto">
+                     <li class="nav-item m-1">
+                        <a href="{% url 'vehicletypeslist' %}" class="btn btn-outline-secondary">Fahrzeugtypen</a>
+                    </li>
+                     <li class="nav-item m-1">
+                        <a href="{% url 'vehicleslist' %}" class="btn btn-outline-secondary">Eigene Fahrzeuge</a>
+                    </li>
+                    <li class="nav-item m-1">
+                        <a href="{% url 'login' %}" class="btn btn-outline-secondary">Log in</a>
+                    </li>
+                    <li class="nav-item dropdown m-1">
+                        <a class="nav-link dropdown-toggle" href="#" id="companyMenu" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">{{ user.player.activecompany.abbrev }}</a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="companyMenu">
+                            {% for company in user.player.get_companies %}
+                                {% if company != user.player.activecompany %}
+                                    <a class="dropdown-item" href="{% url 'switch_company' pk=company.pk %}">{{ company.abbrev }}</a>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown m-1">
+                        <a class="nav-link dropdown-toggle" href="#" id="userMenu" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">{{ user.username }}</a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
+
                             <a class="dropdown-item" href="{% url 'createcompany' %}">Unternehmen erstellen</a>
                             <div class="dropdown-divider"></div>
                         </div>

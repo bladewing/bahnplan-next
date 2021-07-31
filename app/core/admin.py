@@ -2,6 +2,9 @@ from django.contrib import admin
 
 # Register your models here.
 from core.models.company import Company
+from core.models.criterion import Criterion
+from core.models.leasing_mode import LeasingMode
+from core.models.line import Line
 from core.models.route import Route
 from core.models.tender import Tender
 from core.models.vehicle import Vehicle
@@ -12,6 +15,65 @@ admin.site.register(Vehicle)
 admin.site.register(VehicleType)
 admin.site.register(WorkshopCategory)
 admin.site.register(Tender)
+admin.site.register(Station)
+
+
+class TrackInline(admin.TabularInline):
+    model = Track
+
+
+class TrackLimitInline(admin.TabularInline):
+    model = TrackLimit
+
+
+class LineInline(admin.TabularInline):
+    model = Line
+
+
+class WorkshopInline(admin.TabularInline):
+    model = Tender.workshops.through
+
+
+class CriterionInline(admin.TabularInline):
+    model = Criterion
+
+
+class TrackInline(admin.TabularInline):
+    model = Track
+
+
+class TenderAdmin(admin.ModelAdmin):
+    list_display = ('get_route_name', 'id', 'start_date', 'end_date', 'route', 'text')
+    readonly_fields = ('id',)
+    fields = ('id', 'start_date', 'end_date', 'route', 'text')
+    inlines = [LineInline, TrackLimitInline, TrackInline, WorkshopInline, CriterionInline]
+
+    def get_route_name(self, obj):
+        return obj.route.name
+
+    get_route_name.short_description = 'route'
+    get_route_name.admin_order_field = 'route__name'
+
+
+admin.site.register(Tender, TenderAdmin)
+
+
+class TransportRequirementInline(admin.TabularInline):
+    model = TransportRequirement
+
+
+class LineAdmin(admin.ModelAdmin):
+    inlines = [TransportRequirementInline]
+
+
+admin.site.register(Line, LineAdmin)
+
+
+class TrackAdmin(admin.ModelAdmin):
+    model = Track
+
+
+admin.site.register(Track, TrackAdmin)
 
 
 class CompanyAdmin(admin.ModelAdmin):
@@ -34,3 +96,9 @@ class RouteAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Route, RouteAdmin)
+
+class LeasingModeAdmin(admin.ModelAdmin):
+    list_display = ('name', 'factor_yearly', 'factor_weekly')
+
+
+admin.site.register(LeasingMode, LeasingModeAdmin)
