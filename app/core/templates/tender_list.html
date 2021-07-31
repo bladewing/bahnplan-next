@@ -4,20 +4,20 @@
     <h2>Aktuelle Ausschreibungen</h2>
     <table class="table">
         <thead>
-            <tr>
-                <th scope="col">Typ</th>
-                <th scope="col">Text</th>
-                <th scope="col">Abgabefrist</th>
-            </tr>
+        <tr>
+            <th scope="col">Typ</th>
+            <th scope="col">Text</th>
+            <th scope="col">Abgabefrist</th>
+        </tr>
         </thead>
         <tbody>
-            {% for tender in tenders %}
+        {% for tender in tenders %}
             <tr>
                 <td>{{ tender.route.type }}</td>
-                <td><a href="{% url 'tenderdetails' pk=tender.pk %}">{{ tender.route.name }}</a></td>
+                <td><a href="{% url 'tender-details' pk=tender.pk %}">{{ tender.route.name }}</a></td>
                 <td>{{ tender.end_date }}</td>
             </tr>
-            {% endfor %}
+        {% endfor %}
         </tbody>
     </table>
 {% endblock %}

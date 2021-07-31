@@ -4,22 +4,22 @@
     <h2>Verfügbare Fahrzeugtypen</h2>
     <table class="table text-center">
         <thead>
-            <tr>
-                <th scope="col" class="text-left">Bezeichnung</th>
-                <th scope="col">Name</th>
-                <th scope="col">Vmax</th>
-                <th scope="col">Kapazität</th>
-                <th scope="col">Neupreis</th>
-                <th scope="col">Kosten/km</th>
-                <th scope="col">Kosten/h</th>
-                <th scope="col">max. Traktion</th>
-                <th scope="col">Wartung</th>
-            </tr>
+        <tr>
+            <th scope="col" class="text-left">Bezeichnung</th>
+            <th scope="col">Name</th>
+            <th scope="col">Vmax</th>
+            <th scope="col">Kapazität</th>
+            <th scope="col">Neupreis</th>
+            <th scope="col">Kosten/km</th>
+            <th scope="col">Kosten/h</th>
+            <th scope="col">max. Traktion</th>
+            <th scope="col">Wartung</th>
+        </tr>
         </thead>
         <tbody>
-            {% for vt in vehicle_types %}
+        {% for vt in vehicle_types %}
             <tr>
-                <td class="text-left"><a href="{% url 'vehiclelease' pk=vt.pk %}">{{ vt.name }}</a></td>
+                <td class="text-left"><a href="{% url 'vehicle-lease' pk=vt.pk %}">{{ vt.name }}</a></td>
                 <td>{{ vt.vocal_name }}</td>
                 <td class="text-right">{{ vt.v_max }} km/h</td>
                 <td class="text-right">{{ vt.cargo_tons_limit }} t</td>
@@ -29,7 +29,7 @@
                 <td>{{ vt.multi_head_limit }}</td>
                 <td>Kat. {{ vt.workshop_category.category }}</td>
             </tr>
-            {% endfor %}
+        {% endfor %}
         </tbody>
     </table>
 {% endblock %}

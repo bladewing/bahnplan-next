@@ -4,10 +4,10 @@ from . import views
 
 urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
-    path('createcompany', views.create_company_view, name='createcompany'),
-    path('tenderslist', views.tenders_list_view, name='tenderslist'),
-    path('tender/<int:pk>', views.tenders_detail_view, name='tenderdetails'),
-    path('vehicletypeslist', views.vehicle_types_list_view, name='vehicletypeslist'),
-    path('vehicleslist', views.vehicle_list_view, name='vehicleslist'),
-    path('vehicleslease/<int:pk>', views.vehicle_lease_view, name='vehiclelease'),
+    path('create_company', views.create_company_view, name='create-company'),
+    path('tender_list', views.tenders_list_view, name='tender-list'),
+    path('tender/<int:pk>', views.tenders_detail_view, name='tender-details'),
+    path('vehicle_types_list', views.vehicle_types_list_view, name='vehicle-type-list'),
+    path('vehicle_list', views.vehicle_list_view, name='vehicle-list'),
+    path('vehicle_lease/<int:pk>', views.vehicle_lease_view, name='vehicle-lease'),
 ]

@@ -108,7 +108,7 @@ class IndexView(BreadcrumbTemplateView):
 
 def tenders_list_view(request):
     tenders = Tender.objects.filter(start_date__lte=datetime.datetime.now()).order_by('end_date')
-    return render(request, 'tenders_list.html', {'tenders': tenders})
+    return render(request, 'tender_list.html', {'tenders': tenders})
 
 
 def tenders_detail_view(request, pk):
@@ -135,7 +135,7 @@ def vehicle_types_list_view(request):
 
 def vehicle_list_view(request):
     vehicles = Vehicle.objects.filter(owner=request.user.player.active_company)
-    return render(request, 'vehicles_list.html', {'vehicles': vehicles})
+    return render(request, 'vehicle_list.html', {'vehicles': vehicles})
 
 
 def vehicle_lease_view(request, pk):
@@ -146,7 +146,7 @@ def vehicle_lease_view(request, pk):
         leasing_mode = LeasingMode.objects.get(pk=request.POST.get("leasingMode"))
         if amount > 0 and leasing_mode is not None:
             Vehicle.create_vehicle(vehicle_type, leasing_mode, amount, request.user.player.active_company)
-            return redirect('vehicletypeslist')
+            return redirect('vehicle-type-list')
     else:
         vehicle_type = VehicleType.objects.get(pk=pk)
         leasing_modes = LeasingMode.objects.all()

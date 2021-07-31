@@ -30,7 +30,7 @@
             <div class="collapse navbar-collapse text-right" id="mainMenu">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Startseite</a>
+                        <a class="nav-link" href="{% url 'index' %}">Startseite</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Infozentrale</a>
@@ -39,7 +39,7 @@
                         <a class="nav-link dropdown-toggle" href="#" id="operationMenu" role="button"
                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Betrieb </a>
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="operationMenu">
-                            <li><a class="dropdown-item" href="{% url 'vehicletypeslist' %}">Fahrzeugtypen</a></li>
+                            <li><a class="dropdown-item" href="{% url 'vehicle-type-list' %}">Fahrzeugtypen</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -47,7 +47,7 @@
                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Gesellschaftsbereich</a>
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="operationMenu">
-                            <li><a class="dropdown-item" href="{% url 'vehicleslist' %}">Eigene Fahrzeuge</a></li>
+                            <li><a class="dropdown-item" href="{% url 'vehicle-list' %}">Eigene Fahrzeuge</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -89,7 +89,7 @@
                                 </li>
                             {% endif %}
                             <li>
-                                <a class="dropdown-item" href="{% url 'createcompany' %}">Unternehmen erstellen</a>
+                                <a class="dropdown-item" href="{% url 'create-company' %}">Unternehmen erstellen</a>
                             </li>
                             <li>
                                 <hr class="dropdown-divider">
