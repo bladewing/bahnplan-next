@@ -36,11 +36,11 @@ class BreadcrumbsLoginView(LoginView):
 
 
 def switch_company_view(request, pk):
-    newcompany = Company.objects.get(pk=pk)
-    if newcompany.ownership == request.user:
-        request.user.player.active_company = newcompany
+    new_company = Company.objects.get(pk=pk)
+    if new_company.ownership.filter(id=request.user.id).exists:
+        request.user.player.active_company = new_company
         request.user.player.save()
     else:
-        print("WARNING: User " + request.user.username + " wants to switch to company " + newcompany.name +
+        print("WARNING: User " + request.user.username + " wants to switch to company " + new_company.name +
               "which he doesn't own.")
     return redirect('index')  # TODO better redirect to the page where the user called the company switch
