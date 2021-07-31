@@ -54,7 +54,7 @@
             <div class="col-md-3 col-xxl-2 side-bar-right">
                 {% if user.is_authenticated %}
                     <div class="row  side-bar-right">
-                        <h4 class="side-bar-right-first-item">Status EVU</h4>
+                        <h4 class="side-bar-right-first-item">Status {{ user.player.active_company.abbrev }}</h4>
                         <ul>
                             <li>Kontostand: <br> {{ account_balance|floatformat:2|intcomma }}</li>
                             <li>Gewinn diese Woche: <br> {{ profit_this_week|floatformat:2|intcomma }}</li>
