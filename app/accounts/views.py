@@ -8,7 +8,6 @@ from .forms import SignUpForm
 from .models import Player
 
 
-
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -39,7 +38,7 @@ class BreadcrumbsLoginView(LoginView):
 def switch_company_view(request, pk):
     newcompany = Company.objects.get(pk=pk)
     if newcompany.ownership == request.user:
-        request.user.player.activecompany = newcompany
+        request.user.player.active_company = newcompany
         request.user.player.save()
     else:
         print("WARNING: User " + request.user.username + " wants to switch to company " + newcompany.name +

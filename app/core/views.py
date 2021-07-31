@@ -7,20 +7,18 @@ from django.urls import reverse
 from django.utils import timezone
 from django.views.generic import TemplateView
 
-from core.models.route import Route
-from core.models.vehicle import Vehicle
-from core.models.workshop import Workshop
 from core.models.company import Company
-from core.models.tender import Tender
-from core.models.track_limit import TrackLimit
-from core.models.track import Track
-from core.models.line import Line
 from core.models.criterion import Criterion
 from core.models.leasing_mode import LeasingMode
+from core.models.line import Line
+from core.models.route import Route
+from core.models.tender import Tender
+from core.models.track import Track
+from core.models.track_limit import TrackLimit
+from core.models.vehicle import Vehicle
 from core.models.vehicle_type import VehicleType
-
+from core.models.workshop import Workshop
 from .forms import CompanyCreationForm
-
 
 
 def index_view(request):
@@ -84,7 +82,6 @@ class IndexView(BreadcrumbTemplateView):
                 'account_balance': self.account_balance(),
             }
         )
-
         return context
 
     @staticmethod
@@ -107,6 +104,7 @@ class IndexView(BreadcrumbTemplateView):
     @staticmethod
     def account_balance():
         return 0
+
 
 def tenders_list_view(request):
     tenders = Tender.objects.filter(start_date__lte=datetime.datetime.now()).order_by('end_date')
@@ -136,7 +134,7 @@ def vehicle_types_list_view(request):
 
 
 def vehicle_list_view(request):
-    vehicles = Vehicle.objects.filter(owner=request.user.player.activecompany)
+    vehicles = Vehicle.objects.filter(owner=request.user.player.active_company)
     return render(request, 'vehicles_list.html', {'vehicles': vehicles})
 
 
@@ -147,7 +145,7 @@ def vehicle_lease_view(request, pk):
         amount = int(request.POST.get("amount"))
         leasing_mode = LeasingMode.objects.get(pk=request.POST.get("leasingMode"))
         if amount > 0 and leasing_mode is not None:
-            Vehicle.create_vehicle(vehicle_type, leasing_mode, amount, request.user.player.activecompany)
+            Vehicle.create_vehicle(vehicle_type, leasing_mode, amount, request.user.player.active_company)
             return redirect('vehicletypeslist')
     else:
         vehicle_type = VehicleType.objects.get(pk=pk)

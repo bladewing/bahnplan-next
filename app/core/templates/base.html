@@ -35,11 +35,20 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#">Infozentrale</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Betrieb</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="operationMenu" role="button"
+                           data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Betrieb </a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="operationMenu">
+                            <li><a class="dropdown-item" href="{% url 'vehicletypeslist' %}">Fahrzeugtypen</a></li>
+                        </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Gesellschaftsbereich</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="operationMenu" role="button"
+                           data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Gesellschaftsbereich</a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="operationMenu">
+                            <li><a class="dropdown-item" href="{% url 'vehicleslist' %}">Eigene Fahrzeuge</a></li>
+                        </ul>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Aktuelles</a>
@@ -52,45 +61,45 @@
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="userMenu" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false">{{ user.username }}</a>
-                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="userMenu">
-            <div class="collapse navbar-collapse" id="mainMenu">
-                <ul class="navbar-nav ml-auto">
-                     <li class="nav-item m-1">
-                        <a href="{% url 'vehicletypeslist' %}" class="btn btn-outline-secondary">Fahrzeugtypen</a>
-                    </li>
-                     <li class="nav-item m-1">
-                        <a href="{% url 'vehicleslist' %}" class="btn btn-outline-secondary">Eigene Fahrzeuge</a>
-                    </li>
-                    <li class="nav-item m-1">
-                        <a href="{% url 'login' %}" class="btn btn-outline-secondary">Log in</a>
-                    </li>
-                    <li class="nav-item dropdown m-1">
-                        <a class="nav-link dropdown-toggle" href="#" id="companyMenu" data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">{{ user.player.activecompany.abbrev }}</a>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="companyMenu">
-                            {% for company in user.player.get_companies %}
-                                {% if company != user.player.activecompany %}
-                                    <a class="dropdown-item" href="{% url 'switch_company' pk=company.pk %}">{{ company.abbrev }}</a>
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            {% if user.is_authenticated %}
+                                {% if user.player.active_company.abbrev is None %}
+                                    {{ user.username }} / Keine aktive Gesellschaft
+                                {% else %}
+                                    {{ user.username }} / {{ user.player.active_company.abbrev }}
                                 {% endif %}
-                            {% endfor %}
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown m-1">
-                        <a class="nav-link dropdown-toggle" href="#" id="userMenu" data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">{{ user.username }}</a>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
-
-                            <a class="dropdown-item" href="{% url 'createcompany' %}">Unternehmen erstellen</a>
-                            <div class="dropdown-divider"></div>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        {% if user.is_authenticated %}
-                            <a href="{% url 'logout' %}" class="btn btn-outline-secondary">Log Out</a>
-                        {% else %}
-                            <a href="{% url 'login' %}" class="btn btn-outline-secondary">Log In</a>
-                        {% endif %}
+                            {% else %}
+                                Gast
+                            {% endif %}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="userMenu">
+                            {% if user.player.get_companies.count != 0 %}
+                                <li><h6 class="dropdown-header">Wechseln zu:</h6></li>
+                                {% for company in user.player.get_companies %}
+                                    {% if company != user.player.activecompany %}
+                                        <li>
+                                            <a class="dropdown-item" href="{% url 'switch_company' pk=company.pk %}">
+                                                {{ company.abbrev }}
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                            {% endif %}
+                            <li>
+                                <a class="dropdown-item" href="{% url 'createcompany' %}">Unternehmen erstellen</a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'logout' %}" class="dropdown-item">Log Out</a>
+                            {% else %}
+                                <a href="{% url 'login' %}" class="dropdown-item">Log In</a>
+                            {% endif %}
+                        </ul>
                     </li>
                 </ul>
             </div>
@@ -124,6 +133,7 @@
                     </div>
                 </div>
             </div>
+        </section>
     </footer>
 {% endblock body %}
 </body>
