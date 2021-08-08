@@ -104,4 +104,9 @@ class LeasingModeAdmin(admin.ModelAdmin):
 
 admin.site.register(LeasingMode, LeasingModeAdmin)
 
-admin.site.register(Transaction)
+
+class TransactionAdmin(admin.ModelAdmin):
+    list_display = ('timestamp', 'reason', 'payer', 'recipient', 'amount')
+
+
+admin.site.register(Transaction, TransactionAdmin)

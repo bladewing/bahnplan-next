@@ -1,5 +1,6 @@
 import datetime
-from datetime import timedelta
+from datetime import timedelta, date, datetime
+from decimal import Decimal, getcontext
 
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
@@ -96,24 +97,37 @@ class IndexView(BreadcrumbTemplateView):
             weeks=2)).order_by('end_date')
 
     def profit_this_week(self):
-        last_week = timezone.now() - timedelta(days=7)
+        start_of_week = datetime.now() - timedelta(days=date.today().weekday())
+        start_of_week = start_of_week.replace(minute=0, hour=0, second=0, microsecond=0)
+        return self.get_profit_between(self.get_active_company(), start_of_week, datetime.now())
         # print(Player.objects.filter(user=self.request.user).active_company)
-        income = Transaction.objects.filter(recipient=self.get_active_company(),
-                                            timestamp__gt=last_week).aggregate(Sum('amount'))
-        spendings = Transaction.objects.filter(payer=self.get_active_company(),
-                                               timestamp__gt=last_week).aggregate(Sum('amount'))
-        return income['amount__sum'] or 0 - spendings['amount__sum'] or 0
+
+    @staticmethod
+    def get_profit_between(company, start, end):
+        income = Transaction.objects.filter(recipient=company,
+                                            timestamp__gt=start,
+                                            timestamp__lt=end).aggregate(Sum('amount'))
+        spending = Transaction.objects.filter(payer=company,
+                                              timestamp__gt=start,
+                                              timestamp__lt=end).aggregate(Sum('amount'))
+        getcontext().prec = 2
+        return Decimal((income['amount__sum'] or 0) - (spending['amount__sum'] or 0))
 
     def get_active_company(self):
         return self.request.user.player.active_company
 
-    @staticmethod
-    def profit_last_week():
-        return 0
+    def profit_last_week(self):
+        start_of_week = datetime.now() - timedelta(days=date.today().weekday(), weeks=1)
+        start_of_week = start_of_week.replace(minute=0, hour=0, second=0, microsecond=0)
+        end_of_week = start_of_week + timedelta(days=7)
+        return self.get_profit_between(self.get_active_company(), start_of_week, end_of_week)
 
-    @staticmethod
-    def account_balance():
-        return 0
+    def account_balance(self):
+        company = self.get_active_company()
+        income = Transaction.objects.filter(recipient=company).aggregate(Sum('amount'))
+        spending = Transaction.objects.filter(payer=company).aggregate(Sum('amount'))
+        getcontext().prec = 2
+        return Decimal((income['amount__sum'] or 0) - (spending['amount__sum'] or 0))
 
 
 def tenders_list_view(request):
