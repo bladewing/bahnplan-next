@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
 
+{% block title %}
+    Verfügbare Fahrzeugtypen
+{% endblock %}
 {% block content %}
     <h2>Verfügbare Fahrzeugtypen</h2>
     <table class="table text-center">
@@ -21,11 +24,11 @@
             <tr>
                 <td class="text-left"><a href="{% url 'vehicle-lease' pk=vt.pk %}">{{ vt.name }}</a></td>
                 <td>{{ vt.vocal_name }}</td>
-                <td class="text-right">{{ vt.v_max }} km/h</td>
-                <td class="text-right">{{ vt.cargo_tons_limit }} t</td>
-                <td class="text-right">{{ vt.total_price|floatformat:"g" }} €</td>
-                <td class="text-right">{{ vt.cost_per_km|floatformat:2 }} €</td>
-                <td class="text-right">{{ vt.cost_per_hour|floatformat:2 }} €</td>
+                <td style="text-align:right;">{{ vt.v_max }} km/h</td>
+                <td style="text-align:right;">{{ vt.cargo_tons_limit }} t</td>
+                <td style="text-align:right;">{{ vt.total_price|floatformat:2 }} €</td>
+                <td style="text-align:right;">{{ vt.cost_per_km|floatformat:2 }} €</td>
+                <td style="text-align:right;">{{ vt.cost_per_hour|floatformat:2 }} €</td>
                 <td>{{ vt.multi_head_limit }}</td>
                 <td>Kat. {{ vt.workshop_category.category }}</td>
             </tr>

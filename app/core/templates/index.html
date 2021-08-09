@@ -1,6 +1,4 @@
 {% extends 'base.html' %}
-{% load l10n %}
-{% load humanize %}
 
 {% block content %}
     <div class="container-fluid">
@@ -56,9 +54,9 @@
                     <div class="row  side-bar-right">
                         <h4 class="side-bar-right-first-item">Status {{ user.player.active_company.abbrev }}</h4>
                         <ul>
-                            <li>Kontostand: <br> {{ account_balance|floatformat:2|intcomma }}</li>
-                            <li>Gewinn diese Woche: <br> {{ profit_this_week|floatformat:2|intcomma }}</li>
-                            <li>Gewinn letzte Woche: <br> {{ profit_last_week|floatformat:2|intcomma }}</li>
+                            <li>Kontostand: <br> {{ account_balance|floatformat:2 }}</li>
+                            <li>Gewinn diese Woche: <br> {{ profit_this_week|floatformat:2 }}</li>
+                            <li>Gewinn letzte Woche: <br> {{ profit_last_week|floatformat:2 }}</li>
                         </ul>
                     </div>
                 {% endif %}
