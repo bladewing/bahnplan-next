@@ -43,4 +43,5 @@ def switch_company_view(request, pk):
     else:
         print("WARNING: User " + request.user.username + " wants to switch to company " + new_company.name +
               "which he doesn't own.")
-    return redirect('index')  # TODO better redirect to the page where the user called the company switch
+    return redirect(
+        request.META.get('HTTP_REFERER'))
