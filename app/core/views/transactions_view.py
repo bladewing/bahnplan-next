@@ -16,3 +16,7 @@ class TransactionView(BreadcrumbMixin, ListView):
         context = super().get_context_data(**kwargs)
         context.update({'company': self.get_active_company()})
         return context
+
+    def get_queryset(self):
+        return Transaction.objects.filter(payer=self.get_active_company()) | Transaction.objects.filter(
+            recipient=self.get_active_company())
