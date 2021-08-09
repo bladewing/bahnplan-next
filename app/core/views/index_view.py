@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from django.utils import timezone
+from django.views.generic import TemplateView
 
 from core.models.company import Company
 from core.models.route import Route
@@ -8,10 +9,10 @@ from core.models.tender import Tender
 from core.models.vehicle import Vehicle
 from core.models.workshop import Workshop
 from core.utils.finance_utils import get_profit_for_week, account_balance
-from core.views.breadcrumb_template_view import BreadcrumbTemplateView
+from core.views.breadcrumb_mixin import BreadcrumbMixin
 
 
-class IndexView(BreadcrumbTemplateView):
+class IndexView(BreadcrumbMixin, TemplateView):
     breadcrumb_url = 'index'
     breadcrumb_name = 'Startseite'
     template_name = 'index.html'

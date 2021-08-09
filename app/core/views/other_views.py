@@ -16,11 +16,6 @@ from core.models.vehicle import Vehicle
 from core.models.vehicle_type import VehicleType
 
 
-def index_view(request):
-    """Main view"""
-    return render(request, 'index.html')
-
-
 @login_required()
 def create_company_view(request):
     """

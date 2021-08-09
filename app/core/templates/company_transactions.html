@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container-fluid">
+        <h1 class="display-4">Buchungsüberblick</h1>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Betrag</th>
+                <th>Grund</th>
+                <th>Zeit</th>
+                <th>Empfänger/Sender</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for transacion in object_list %}
+                <tr>
+                    {% if transacion.payer == company %}
+                        <td style="color:red;text-align:right;">- {% else %}
+                        <td style="text-align:right;">
+                    {% endif %}
+                    {{ transacion.amount }} €
+                    </td>
+                    <td>{{ transacion.reason }}</td>
+                    <td>{{ transacion.timestamp }}</td>
+                    {% if transacion.payer == company %}
+                        <td>{{ transacion.recipient|default_if_none:"Bahnplan" }}</td>
+                    {% else %}
+                        <td>{{ transacion.payer|default_if_none:"Bahnplan" }}</td>
+
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
