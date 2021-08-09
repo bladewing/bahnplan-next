@@ -44,17 +44,17 @@ def tenders_list_view(request):
 def tenders_detail_view(request, pk):
     tender = get_object_or_404(Tender, pk=pk)
     platforms = TrackLimit.objects.filter(tender=tender).filter(time_to_reach_in_minutes=0)
-    servicefacilities = TrackLimit.objects.filter(tender=tender).filter(time_to_reach_in_minutes__gt=0)
+    service_facilities = TrackLimit.objects.filter(tender=tender).filter(time_to_reach_in_minutes__gt=0)
     tracks = Track.objects.filter(tender=tender)
     lines = Line.objects.filter(tender=tender)
-    criterions = Criterion.objects.filter(tender=tender)
+    criteria = Criterion.objects.filter(tender=tender)
     return render(request, 'tender_details.html', {
         'tender': tender,
-        'servicefacilities': servicefacilities,
+        'service_facilities': service_facilities,
         'platforms': platforms,
         'lines': lines,
         'tracks': tracks,
-        'criterions': criterions
+        'criteria': criteria
     })
 
 
@@ -69,7 +69,7 @@ def vehicle_list_view(request):
 
 
 def vehicle_lease_view(request, pk):
-    # TODO error when form input is not valid/no lease happend
+    # TODO error when form input is not valid/no lease happened
     if request.method == "POST":
         vehicle_type = VehicleType.objects.get(pk=request.POST.get("vehicleType"))
         amount = int(request.POST.get("amount"))
