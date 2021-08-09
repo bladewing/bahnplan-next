@@ -1,9 +1,26 @@
 {% extends 'base.html' %}
 
+{% load bootstrap5 %}
+{% load widget_tweaks %}
+
 {% block content %}
-    <h2>Neues Unternehmen erstellen</h2>
-    <form method="POST" class="post-form">{% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="save btn btn-default">Unternehmen erstellen</button>
-    </form>
+    <div class="container">
+        <h2>Neues Unternehmen erstellen</h2>
+        <form method="POST" class="post-form" action="{% url 'create-company' %}">
+            {% csrf_token %}
+            <div class="input-group form-group">
+                {{ form.name|add_class:'form-control' }}
+                <div class="input-group-append">
+                    <span class="input-group-text">Name der Gesellschaft</span>
+                </div>
+            </div>
+            <div class="input-group form-group">
+                {{ form.abbrev|add_class:'form-control' }}
+                <div class="input-group-append">
+                    <span class="input-group-text">Abkürzung</i></span>
+                </div>
+            </div>
+            <button type="submit" class="save btn btn-primary">Unternehmen erstellen</button>
+        </form>
+    </div>
 {% endblock %}

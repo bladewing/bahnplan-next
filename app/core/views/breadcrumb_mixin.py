@@ -16,6 +16,8 @@ class BreadcrumbMixin:
         return context
 
     def get_active_company(self):
+        if self.request.user.is_anonymous:
+            return None
         return self.request.user.player.active_company
 
     def get_own_breadcrumb(self):
