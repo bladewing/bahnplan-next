@@ -53,11 +53,6 @@ def tenders_detail_view(request, pk):
     })
 
 
-def vehicle_types_list_view(request):
-    vehicle_types = VehicleType.objects.all()
-    return render(request, 'vehicle_types_list.html', {'vehicle_types': vehicle_types})
-
-
 def vehicle_list_view(request):
     vehicles = Vehicle.objects.filter(owner=request.user.player.active_company)
     return render(request, 'vehicle_list.html', {'vehicles': vehicles})

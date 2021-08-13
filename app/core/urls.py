@@ -1,5 +1,6 @@
 from django.urls import path
 
+import core.views.vehicle_type_view
 from core import views
 
 urlpatterns = [
@@ -8,7 +9,7 @@ urlpatterns = [
     path('tender_list', views.tenders_list_view, name='tender-list'),
     path('tender/<int:pk>', views.tenders_detail_view, name='tender-details'),
     path('company/transactions', views.TransactionView.as_view(), name='company_transactions'),
-    path('vehicle_types_list', views.vehicle_types_list_view, name='vehicle-type-list'),
+    path('vehicle_types', core.views.vehicle_type_view.VehicleTypeView.as_view(), name='vehicle-type-list'),
     path('vehicle_list', views.vehicle_list_view, name='vehicle-list'),
     path('vehicle_lease/<int:pk>', views.vehicle_lease_view, name='vehicle-lease'),
 ]
