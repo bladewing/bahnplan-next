@@ -5,6 +5,7 @@ from core.models.company import Company
 from core.models.criterion import Criterion
 from core.models.leasing_mode import LeasingMode
 from core.models.line import Line
+from core.models.plan import Plan
 from core.models.route import Route
 from core.models.station import Station
 from core.models.tender import Tender
@@ -110,3 +111,5 @@ class TransactionAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Transaction, TransactionAdmin)
+
+admin.site.register(Plan)
