@@ -4,8 +4,8 @@ from django.views.generic import FormView
 
 from core.forms import CompanyCreationForm
 from core.models.company import Company
-from core.views import IndexView
 from core.views.breadcrumb_mixin import BreadcrumbMixin
+from core.views.index_view import IndexView
 
 
 class CreateCompanyView(BreadcrumbMixin, LoginRequiredMixin, FormView):

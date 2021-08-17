@@ -9,5 +9,6 @@ class VehicleTypeView(BreadcrumbMixin, ListView):
     breadcrumb_url = 'vehicle-type-list'
     breadcrumb_name = 'Fahrzeugtypen'
     parent = IndexView
+
     model = VehicleType
     template_name = 'vehicle_types_list.html'
