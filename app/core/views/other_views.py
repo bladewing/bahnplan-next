@@ -4,8 +4,6 @@ from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render, get_object_or_404
 
-from core.forms import CompanyCreationForm
-from core.models.company import Company
 from core.models.criterion import Criterion
 from core.models.leasing_mode import LeasingMode
 from core.models.line import Line
@@ -16,21 +14,7 @@ from core.models.vehicle import Vehicle
 from core.models.vehicle_type import VehicleType
 
 
-@login_required()
-def create_company_view(request):
-    """
-    Page where user can create a company
-    """
-    if request.method == "POST":
-        form = CompanyCreationForm(request.POST)
-        if form.is_valid():
-            Company.create_owned_company(form.data['name'], form.data['abbrev'], request.user)
-            return redirect('index')
-    else:
-        form = CompanyCreationForm
-    return render(request, 'create_company.html', {'form': form})
-
-
+@login_required
 def tenders_list_view(request):
     tenders = Tender.objects.filter(start_date__lte=datetime.datetime.now()).order_by('end_date')
     return render(request, 'tender_list.html', {'tenders': tenders})
