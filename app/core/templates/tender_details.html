@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% now "YmdHis" as nowtimestamp %}
 <h2>{{ tender.route.name }}</h2>
     <div class="container">
-        <div class="container-sm py-3">Abgabefrist: {{tender.end_date}}<br>{{ tender.text }}</div>
+        <div class="container-sm py-3">Abgabefrist: {{tender.end_date}} {% if tender.end_date|date:"YmdHis" >= nowtimestamp %} <a href='{% url 'tender-apply' tender.id %}'>Jetzt bewerben</a>{% else %} <i>Bewerbungsfrist bereits abgelaufen.</i>{% endif %}<br>{{ tender.text }}</div>
         <div class="row">
             <div class="p-3 col-sm-2">Linien</div>
             <div class="p-3 col-md">{% for line in lines %} {{line.name}} {{line.course}} <br> {% endfor %}</div>

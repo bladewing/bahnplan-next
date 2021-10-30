@@ -1,17 +1,21 @@
-from django.contrib.auth import get_user_model
+from django.db import models
+from core.models.tender import Tender
+from core.models.company import Company
+from core.models.criterionvalue import CriterionValue
+from django.conf import settings
 
 class Application (models.Model):
-    tender = models.ForeignKey(Tender, on_delete=models.CASCADE)
-    company = models.ForeignKey(get_user_model, on_delete=SET_NULL)
-    ulp = models.FileField(_(""), upload_to=None, max_length=100) #TODO
+    tender = models.ForeignKey(Tender, on_delete=models.SET_NULL, null=True)
+    company = models.ForeignKey(Company, on_delete=models.SET_NULL, null=True)
+    ulp = models.FilePathField(path=settings.ULP_UPLOAD_DIR) #TODO
+    criterions = models.ManyToManyField(CriterionValue)
 
     class Meta:
-        verbose_name = _("Application")
-        verbose_name_plural = _("s")
+        verbose_name = "Application"
+        verbose_name_plural = "s"
 
     def __str__(self):
         return self.name
 
     def get_absolute_url(self):
         return reverse("_detail", kwargs={"pk": self.pk})
-)

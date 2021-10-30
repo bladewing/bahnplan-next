@@ -36,6 +36,14 @@ def tenders_detail_view(request, pk):
         'criteria': criteria
     })
 
+def tenders_apply_view(request, pk):
+    tender = get_object_or_404(Tender, pk=pk)
+    criteria = Criterion.objects.filter(tender=tender)
+    return render(request, 'tender_apply.html', {
+        'tender': tender,
+        'criteria': criteria,
+    })
+
 
 def vehicle_list_view(request):
     vehicles = Vehicle.objects.filter(owner=request.user.player.active_company)
