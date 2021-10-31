@@ -16,6 +16,7 @@ from core.models.transport_requirement import TransportRequirement
 from core.models.vehicle import Vehicle
 from core.models.vehicle_type import VehicleType
 from core.models.workshop_category import WorkshopCategory
+from core.models.application import Application
 
 admin.site.register(Vehicle)
 admin.site.register(VehicleType)
@@ -109,7 +110,11 @@ admin.site.register(LeasingMode, LeasingModeAdmin)
 class TransactionAdmin(admin.ModelAdmin):
     list_display = ('timestamp', 'reason', 'payer', 'recipient', 'amount')
 
-
 admin.site.register(Transaction, TransactionAdmin)
+
+class ApplicationAdmin(admin.ModelAdmin):
+    list_display = ('tender', 'company', 'ulp')
+
+admin.site.register(Application, ApplicationAdmin)
 
 admin.site.register(Plan)

@@ -2,7 +2,7 @@
 
 {% block content %}
 <h2>Bewerbung für die Ausschreibung {{tender.route.name}}</h2>
-<form action="post" id="tender-apply-form" class="post-form">
+<form method="post" id="tenderApplyForm" class="post-form" enctype="multipart/form-data">
     {% csrf_token %}
     <input type="hidden" id="tenderId" name="tenderID" value="{{ tender.pk }}">
     {% for criterion in criteria %}
@@ -14,10 +14,16 @@
                 </div>
                 <input type="text" class="form-control" id="criterion-{{criterion.pk}}" name="criterion-{{criterion.pk}}">
             </div>
-            <small id="{{criterion.pk}}-help-block" class="form-text text-muted">{{criterion.description}}</small>
+            <small id="criterion-{{criterion.pk}}-help-block" class="form-text text-muted">{{criterion.description}}</small>
         </div>
         {% endif %}
     {% endfor %}
-    <button class="btn btn-danger m-1" type="submit" form="vehicleLeaseForm">Eingaben speichern und weiter…</button>
+    <div class="input-group m-1">
+        <div class="input-group-prepend">
+            <label for="ulp" class="input-group-text">Umlaufplan</label>
+        </div>
+        <input type="file" class="form-control" id="ulp" name="ulp">
+    </div>
+    <button class="btn btn-danger m-1" type="submit" form="tenderApplyForm">Eingaben speichern und weiter…</button>
 </form>
 {% endblock %}}

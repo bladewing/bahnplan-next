@@ -12,6 +12,7 @@ from core.models.track import Track
 from core.models.track_limit import TrackLimit
 from core.models.vehicle import Vehicle
 from core.models.vehicle_type import VehicleType
+from core.models.application import Application
 
 
 @login_required
@@ -39,16 +40,24 @@ def tenders_detail_view(request, pk):
 def tenders_apply_view(request, pk):
     tender = get_object_or_404(Tender, pk=pk)
     criteria = Criterion.objects.filter(tender=tender)
-    return render(request, 'tender_apply.html', {
-        'tender': tender,
-        'criteria': criteria,
-    })
-
+    if request.method == "POST":
+        if tender.pk != request.POST.get("tenderId"):
+            redirect("index")
+        ulp = request.FILES['ulp']
+        criteria_dict = {}
+        for criterion in criteria:
+            if request.POST.__contains__("criterion-"+criterion.pk):
+                criteria_dict[criterion.pk] = request.POST.get("criterion-"+criterion.pk)
+        Application.create_application(tender, ulp, criteria_dict, request.user.player.active_company)
+    else:
+        return render(request, 'tender_apply.html', {
+            'tender': tender,
+            'criteria': criteria,
+        })
 
 def vehicle_list_view(request):
     vehicles = Vehicle.objects.filter(owner=request.user.player.active_company)
     return render(request, 'vehicle_list.html', {'vehicles': vehicles})
-
 
 def vehicle_lease_view(request, pk):
     # TODO error when form input is not valid/no lease happened
