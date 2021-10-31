@@ -1,7 +1,23 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-
-
+<h2>Bewerbung für die Ausschreibung {{tender.name}}</h2>
+<form action="post" id="tender-apply-form" class="post-form">
+    {% csrf_token %}
+    <input type="hidden" id="tenderId" name="tenderID" value="{{ tender.pk }}">
+    {% for criterion in criteria %}
+        {% if criterion.userinput %}
+        <div class="form-row">
+            <div class="input-group m-1">
+                <div class="input-group-prepend">
+                    <label for="criterion-{{criterion.pk}}" class="input-group-text">{{criterion.name}}</label>
+                </div>
+                <input type="text" class="form-control" id="criterion-{{criterion.pk}}" name="criterion-{{criterion.pk}}">
+            </div>
+            <small id="{{criterion.pk}}-help-block" class="form-text text-muted">{{criterion.description}}</small>
+        </div>
+        {% endif %}
+    {% endfor %}
+    <button class="btn btn-danger m-1" type="submit" form="vehicleLeaseForm">Eingaben speichern und weiter…</button>
+</form>
 {% endblock %}}
