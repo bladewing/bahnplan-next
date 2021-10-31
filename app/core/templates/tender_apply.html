@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Bewerbung für die Ausschreibung {{tender.name}}</h2>
+<h2>Bewerbung für die Ausschreibung {{tender.route.name}}</h2>
 <form action="post" id="tender-apply-form" class="post-form">
     {% csrf_token %}
     <input type="hidden" id="tenderId" name="tenderID" value="{{ tender.pk }}">
