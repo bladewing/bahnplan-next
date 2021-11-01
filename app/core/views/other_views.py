@@ -46,7 +46,7 @@ def tenders_apply_view(request, pk):
         ulp = request.FILES['ulp']
         criteria_dict = {}
         for criterion in criteria:
-            if request.POST.__contains__("criterion-"+criterion.pk):
+            if request.POST.__contains__("criterion-"+criterion.pk): #TODO cast criterion.pk to string
                 criteria_dict[criterion.pk] = request.POST.get("criterion-"+criterion.pk)
         Application.create_application(tender, ulp, criteria_dict, request.user.player.active_company)
     else:
