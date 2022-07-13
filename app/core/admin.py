@@ -113,7 +113,7 @@ class TransactionAdmin(admin.ModelAdmin):
 admin.site.register(Transaction, TransactionAdmin)
 
 class ApplicationAdmin(admin.ModelAdmin):
-    list_display = ('tender', 'company', 'ulp')
+    list_display = ('tender','company', 'user', 'submissiontime', 'ulp') #TODO add inline display for criteria
 
 admin.site.register(Application, ApplicationAdmin)
 

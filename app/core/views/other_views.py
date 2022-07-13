@@ -44,11 +44,13 @@ def tenders_apply_view(request, pk):
         if tender.pk != request.POST.get("tenderId"):
             redirect("index")
         ulp = request.FILES['ulp']
+        #TODO move criteria prcessing to application class
         criteria_dict = {}
         for criterion in criteria:
-            if request.POST.__contains__("criterion-"+criterion.pk): #TODO cast criterion.pk to string
+            if request.POST.__contains__("criterion-"+str(criterion.pk)):
                 criteria_dict[criterion.pk] = request.POST.get("criterion-"+criterion.pk)
-        Application.create_application(tender, ulp, criteria_dict, request.user.player.active_company)
+        Application.create_application(tender, ulp, criteria_dict, request.user.player.active_company, request.user)
+        return render(request, 'tender_list') #TODO create application overview page and forward there
     else:
         return render(request, 'tender_apply.html', {
             'tender': tender,
