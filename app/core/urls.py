@@ -12,5 +12,6 @@ urlpatterns = [
     path('company/transactions', views.TransactionView.as_view(), name='company_transactions'),
     path('vehicle_types', views.VehicleTypeView.as_view(), name='vehicle-type-list'),
     path('vehicle_list', core.views.vehicle_list_view.VehicleListView.as_view(), name='vehicle-list'),
+    path('vehicle_lease_change', core.views.vehicle_list_view.VehicleChangeLeaseView.as_view(), name='vehicle-change-lease'),
     path('vehicle_lease/<int:pk>', views.vehicle_lease_view, name='vehicle-lease'),
 ]

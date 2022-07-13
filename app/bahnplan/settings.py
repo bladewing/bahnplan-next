@@ -29,12 +29,15 @@ ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "127.0.0.1").split(" ")
 
 
 # Application definition
+import sys
+sys.modules['fontawesome_free'] = __import__('fontawesome-free')
 
 INSTALLED_APPS = [
     'core.apps.CoreConfig',
     'accounts',
-    'fontawesome-free',
-    "bootstrap5",
+#    'fontawesome-free',
+    'fontawesome_free',
+    'bootstrap5',
     'widget_tweaks',
     'django.contrib.admin',
     'django.contrib.auth',

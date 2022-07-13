@@ -2,7 +2,7 @@
 
 {% block content %}
     <h2>Fahrzeuge in Besitz</h2>
-    <form method="post" class="post-form">
+    <form method="post" class="post-form" action="vehicle_lease_change">
         {% csrf_token %}
         <table class="table text-center">
             <thead>
@@ -10,6 +10,7 @@
                 <th scope="col" class="text-left">Fahrzeug-Id</th>
                 <th scope="col">Strecke</th>
                 <th scope="col">Leasing-Typ</th>
+                <th scope="col">Leasing-Ende</th>
                 <th scope="col">Auswahl</th>
             </tr>
             </thead>
@@ -19,10 +20,19 @@
                     <td class="text-left">{{ v.type.name }}-{{ v.pk }}</td>
                     <td>{{ v.plan.route.name }}</td>
                     <td class="text-center">Leasing {{ v.leasing_mode.name }} </td>
+                    <td class="text-center">{{ v.leased_until }}</td>
                     <td class="text-center"><input type="checkbox" name="selected_vehicles[{{ v.pk }}]"></td>
                 </tr>
             {% endfor %}
             </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="4">
+                <button name="submit" value="change_lease">Leasingvertrag ändern</button>
+                <button name="submit" value="change_kbs">KBS zuweisen</button>
+                </td>
+            </tr>
+            </tfoot>
         </table>
     </form>
 {% endblock %}

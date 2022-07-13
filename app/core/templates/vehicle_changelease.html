@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+Für folgende Fahrzeuge wird das Leasingdatum neu gesetzt:<br>
+<ul>
+    {% for v in object_list %}
+    <li>{{ v.type.name }}-{{ v.pk }}, KBS {{ v.plan.route.name }}, Leasingmodell {{ v.leasing_mode.name }} bis {{ v.leasing_mode.leased_until }} </li>
+    {% endfor %}
+</ul>
+
+    Neues Enddatum für <u>alle</u> o.g. Fahrzeuge:
+<form method="post" class="post-form">
+    {% csrf_token %}
+    <input type="hidden" name="selected_vehicles" value="{{ selected_vehicles_as_text_array }}">
+    <input type="date" name="date">
+</form>
+{% endblock %}

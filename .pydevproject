@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?eclipse-pydev version="1.0"?><pydev_project>
+        
+    <pydev_property name="org.python.pydev.PYTHON_PROJECT_INTERPRETER">pyvenv</pydev_property>
+        
+    <pydev_property name="org.python.pydev.PYTHON_PROJECT_VERSION">python interpreter</pydev_property>
+    
+    <pydev_variables_property name="org.python.pydev.PROJECT_VARIABLE_SUBSTITUTION">
+        <key>env_var:XMODIFIERS</key>
+        <value>@im=none</value>
+        <key>env_var:XDG_GREETER_DATA_DIR</key>
+        <value>/var/lib/lightdm-data/pschade</value>
+        <key>env_var:XDG_SESSION_PATH</key>
+        <value>/org/freedesktop/DisplayManager/Session0</value>
+        <key>DJANGO_MANAGE_LOCATION</key>
+        <value>app/manage.py</value>
+        <key>env_var:GTK_IM_MODULE</key>
+        <value>xim</value>
+        <key>env_var:GDMSESSION</key>
+        <value>xubuntu</value>
+        <key>PY</key>
+        <value>310</value>
+        <key>env_var:XDG_RUNTIME_DIR</key>
+        <value>/run/user/1000</value>
+        <key>env_var:LANG</key>
+        <value>de_DE.UTF-8</value>
+        <key>env_var:GDM_LANG</key>
+        <value>de_DE</value>
+        <key>env_var:LIBOVERLAY_SCROLLBAR</key>
+        <value>0</value>
+        <key>env_var:XDG_CONFIG_DIRS</key>
+        <value>/etc/xdg/xdg-xubuntu:/etc/xdg:/etc/xdg</value>
+        <key>env_var:SSH_AGENT_PID</key>
+        <value>2003</value>
+        <key>env_var:XDG_SESSION_DESKTOP</key>
+        <value>xubuntu</value>
+        <key>env_var:PWD</key>
+        <value>/home/pschade</value>
+        <key>env_var:USER</key>
+        <value>pschade</value>
+        <key>env_var:XDG_MENU_PREFIX</key>
+        <value>xfce-</value>
+        <key>env_var:SSH_AUTH_SOCK</key>
+        <value>/tmp/ssh-XXXXXXRkVvpH/agent.2002</value>
+        <key>env_var:XDG_SESSION_ID</key>
+        <value>c2</value>
+        <key>env_var:_JAVA_OPTIONS</key>
+        <value>-Dswing.aatext=TRUE -Dawt.useSystemAAFontSettings=on -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel</value>
+        <key>env_var:DBUS_SESSION_BUS_ADDRESS</key>
+        <value>unix:path=/run/user/1000/bus</value>
+        <key>env_var:OXYGEN_DISABLE_INNER_SHADOWS_HACK</key>
+        <value>1</value>
+        <key>env_var:HOME</key>
+        <value>/home/pschade</value>
+        <key>env_var:CLUTTER_BACKEND</key>
+        <value>x11</value>
+        <key>env_var:XAUTHORITY</key>
+        <value>/home/pschade/.Xauthority</value>
+        <key>env_var:XDG_DATA_DIRS</key>
+        <value>/usr/share/xubuntu:/usr/share/xfce4:/home/pschade/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share:/var/lib/snapd/desktop:/var/lib/snapd/desktop:/usr/share</value>
+        <key>env_var:GDK_CORE_DEVICE_EVENTS</key>
+        <value>1</value>
+        <key>env_var:XDG_SEAT_PATH</key>
+        <value>/org/freedesktop/DisplayManager/Seat0</value>
+        <key>env_var:DEFAULTS_PATH</key>
+        <value>/usr/share/gconf/xubuntu.default.path</value>
+        <key>env_var:XDG_VTNR</key>
+        <value>7</value>
+        <key>env_var:XDG_CURRENT_DESKTOP</key>
+        <value>XFCE</value>
+        <key>env_var:DISPLAY</key>
+        <value>:0.0</value>
+        <key>env_var:QT_IM_MODULE</key>
+        <value>xim</value>
+        <key>env_var:XDG_SEAT</key>
+        <value>seat0</value>
+        <key>env_var:GTK_OVERLAY_SCROLLING</key>
+        <value>0</value>
+        <key>env_var:SHELL</key>
+        <value>/bin/bash</value>
+        <key>env_var:PATH</key>
+        <value>/home/pschade/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/pschade/.local/bin</value>
+        <key>env_var:SESSION_MANAGER</key>
+        <value>local/desktop:@/tmp/.ICE-unix/1794,unix/desktop:/tmp/.ICE-unix/1794</value>
+        <key>env_var:LOGNAME</key>
+        <value>pschade</value>
+        <key>env_var:QT_QPA_PLATFORMTHEME</key>
+        <value>gtk2</value>
+        <key>env_var:SHLVL</key>
+        <value>0</value>
+        <key>env_var:XDG_SESSION_CLASS</key>
+        <value>user</value>
+        <key>env_var:MANDATORY_PATH</key>
+        <value>/usr/share/gconf/xubuntu.mandatory.path</value>
+        <key>env_var:XDG_SESSION_TYPE</key>
+        <value>x11</value>
+        <key>env_var:CLUTTER_IM_MODULE</key>
+        <value>xim</value>
+        <key>env_var:LANGUAGE</key>
+        <value>de_DE:en</value>
+        <key>env_var:QT_ACCESSIBILITY</key>
+        <value>1</value>
+        <key>env_var:DESKTOP_SESSION</key>
+        <value>xubuntu</value>
+    </pydev_variables_property>
+</pydev_project>

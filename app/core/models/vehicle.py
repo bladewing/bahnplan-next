@@ -16,6 +16,7 @@ class Vehicle(Model):
     owner = ForeignKey(Company, on_delete=PROTECT)
     leasing_mode = ForeignKey(LeasingMode, on_delete=PROTECT)
     leased_since = DateField(null=False)
+    leased_until = DateField(null=True)
 
     def __str__(self):
         return f"{self.type.name}-{self.id:03d}"
